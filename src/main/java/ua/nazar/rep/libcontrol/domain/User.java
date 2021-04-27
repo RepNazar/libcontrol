@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "usr")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -29,6 +29,24 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public boolean isClient() {
+        return roles.contains(Role.ROLE_CLIENT);
+    }
+
+    public boolean isLibrarian() {
+        return roles.contains(Role.ROLE_LIBRARIAN);
+    }
+
+    public boolean isManager() {
+        return roles.contains(Role.ROLE_MANAGER);
+    }
+
+    public boolean isDirector() {
+        return roles.contains(Role.ROLE_DIRECTOR);
+    }
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
 
     @Override
     public boolean isEnabled() {

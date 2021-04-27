@@ -5,5 +5,4 @@ import ua.nazar.rep.libcontrol.domain.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
-
 }
