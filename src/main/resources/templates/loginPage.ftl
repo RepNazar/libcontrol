@@ -2,5 +2,5 @@
 <#import "parts/loginTemplete.ftl" as l>
 
 <@c.page>
-    <@l.login "/login" false/>
+    <@l.login "/login" false false/>
 </@c.page>

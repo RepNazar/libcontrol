@@ -20,9 +20,22 @@
                     <a class="nav-link" href="/my-orders">My orders</a>
                 </li>
             </#if>
-            <#if isManager>
+            <#if isManager || isDirector>
                 <li class="nav-item">
                     <a class="nav-link" href="/orders">Orders</a>
+                </li>
+            </#if>
+            <#if isDirector>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+            </#if>
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/profile">Profile</a>
                 </li>
             </#if>
         </ul>

@@ -1,5 +1,12 @@
-<#macro login path isRegisterForm>
+<#macro login path isRegisterForm isEmployee>
     <form action="${path}" method="post">
+        <#if isEmployee>
+            <select name ="role">
+                <#list roles as role>
+                    <option value="${role}">${role}</option>
+                </#list>
+            </select>
+        </#if>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">User Name :</label>
             <div class="col-sm-6">

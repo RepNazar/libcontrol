@@ -1,6 +1,6 @@
 <#include "security.ftl">
 <#list catalog as book>
-    <tr data-id="${book.id}">
+    <tr data-id="${book.id}" class="${(book.inStock)?string('','bg-secondary')}">
         <td data-type="code">
             <a href="/catalog?book=${book.id}">${book.code}</a>
         </td>
