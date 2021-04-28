@@ -29,6 +29,11 @@ public class SimpleInitialController {
         this.bookRepo = bookRepo;
     }
 
+    @GetMapping("/")
+    public String greeting(){
+        return "greeting";
+    }
+
     @GetMapping("/my-orders")
     public String userOrders(@AuthenticationPrincipal User user, Model model){
         List<Order> orders = orderService.findAllByClient(user);
@@ -101,13 +106,13 @@ public class SimpleInitialController {
     }
 
     @PostMapping("/order/{book_id}")
-    public String commitOrder(@AuthenticationPrincipal User currentUser,
+    public String commitOrder(@AuthenticationPrincipal User user,
                               @PathVariable Long book_id,
                               Model model){
         Book book = bookRepo.findByIdAndInStockTrue(book_id);
-        orderService.addOrder(currentUser, book);
+        orderService.addOrder(user, book);
 
-        List<Order> orders = orderService.findAllByClient(currentUser);
+        List<Order> orders = orderService.findAllByClient(user);
         model.addAttribute("orders", orders);
         return "redirect:/my-orders";
     }

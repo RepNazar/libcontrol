@@ -36,5 +36,6 @@ public class OrderService {
         order.setBook(book);
         order.setClient(currentUser);
         order.setDate(LocalDateTime.now());
+        orderRepo.save(order);
     }
 }
