@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.nazar.rep.libcontrol.domain.Book;
@@ -20,8 +21,7 @@ import java.util.List;
 public class SimpleInitialController {
 
     private final OrderService orderService;
-
-    private BookRepo bookRepo;
+    private final BookRepo bookRepo;
 
     @Autowired
     public SimpleInitialController(OrderService orderService, UserRepo userRepo, BookRepo bookRepo) {
@@ -37,7 +37,7 @@ public class SimpleInitialController {
         return "orders";
 
     }
-
+/*
     @GetMapping("/catalog")
     public String catalog(Model model){
         List<Book> catalog = bookRepo.findAll();
@@ -46,8 +46,8 @@ public class SimpleInitialController {
 
         return "catalog";
     }
-
-    @GetMapping("/catalog/{book}")
+*/
+    @GetMapping("/catalog")
     public String getBook(
             Model model,
             @RequestParam(required = false) Book book
@@ -72,7 +72,7 @@ public class SimpleInitialController {
 
             model.addAttribute("catalog", catalog);
 
-        return "redirect:/catalog";
+        return "catalog";
 
     }
 
@@ -93,14 +93,23 @@ public class SimpleInitialController {
         return "orders";
     }
 
-    @PostMapping("/order/")
+    @GetMapping("/order/{book_id}")
+    public String createOrder(@PathVariable Long book_id, Model model){
+        Book book = bookRepo.findByIdAndInStockTrue(book_id);
+        model.addAttribute("book", book);
+        return "order";
+    }
+
+    @PostMapping("/order/{book_id}")
     public String commitOrder(@AuthenticationPrincipal User currentUser,
-                              @RequestParam Long book_id,
+                              @PathVariable Long book_id,
                               Model model){
-        orderService.addOrder(currentUser, book_id);
+        Book book = bookRepo.findByIdAndInStockTrue(book_id);
+        orderService.addOrder(currentUser, book);
+
         List<Order> orders = orderService.findAllByClient(currentUser);
         model.addAttribute("orders", orders);
-        return "orders";
+        return "redirect:/my-orders";
     }
 
 }

@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ua.nazar.rep.libcontrol.domain.Book;
 
 public interface BookRepo extends JpaRepository<Book, Long> {
+    Book findByIdAndInStockTrue(Long id);
 }

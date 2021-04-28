@@ -10,6 +10,7 @@
         <td>
             <#if isLibrarian>
                 <form method="post" action="/catalog/delete">
+
                     <input type="hidden" name="id" value="${book.id}"/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <div class="form-group m-0">
@@ -18,6 +19,9 @@
                         </button>
                     </div>
                 </form>
+            </#if>
+            <#if isClient>
+                <a href="/order/${book.id}" class="btn btn-link">Order</a>
             </#if>
         </td>
     </tr>
