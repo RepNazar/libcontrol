@@ -8,35 +8,36 @@ create table user_role
 
 create table users
 (
-    id              int8 not null,
-    activation_code varchar(255),
-    active          boolean not null,
-    email           varchar(255),
-    password        varchar(255) not null,
+    id              int8         not null,
     username        varchar(255) not null,
+    password        varchar(255) not null,
+    email           varchar(255),
+    active          boolean      not null,
+    activation_code varchar(255),
     primary key (id)
 );
 
 create table books
 (
-    id       int8 not null,
+    id       int8    not null,
     code     varchar(255),
-    in_stock boolean not null,
     name     varchar(255),
+    in_stock boolean not null,
     owner_id int8,
     primary key (id)
 );
 
 create table orders
 (
-    id        int8 not null,
-    approved  boolean not null,
-    confirmed boolean not null,
-    date      timestamp,
-    finished  boolean not null,
-    status    varchar(255),
-    book_id   int8,
-    user_id   int8,
+    id         int8    not null,
+    status     varchar(255),
+    date       timestamp,
+    approved   boolean not null,
+    confirmed  boolean not null,
+    finished   boolean not null,
+    for_return boolean not null,
+    book_id    int8,
+    user_id    int8,
     primary key (id)
 );
 

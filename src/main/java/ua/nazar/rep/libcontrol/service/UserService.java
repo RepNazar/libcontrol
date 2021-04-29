@@ -11,7 +11,6 @@ import ua.nazar.rep.libcontrol.domain.Role;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.repo.UserRepo;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service

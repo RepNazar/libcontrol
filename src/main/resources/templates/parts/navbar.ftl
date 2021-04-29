@@ -17,12 +17,18 @@
             </li>
             <#if isClient>
                 <li class="nav-item">
+                    <a class="nav-link" href="/my-books">My books</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/my-orders">My orders</a>
                 </li>
             </#if>
             <#if isManager || isDirector>
                 <li class="nav-item">
                     <a class="nav-link" href="/orders">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/return-requests">Requests</a>
                 </li>
             </#if>
             <#if isDirector>

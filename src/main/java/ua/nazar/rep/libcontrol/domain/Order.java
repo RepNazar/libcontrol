@@ -32,4 +32,6 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
+
+    private boolean forReturn;
 }
