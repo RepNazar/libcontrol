@@ -1,7 +1,9 @@
 package ua.nazar.rep.libcontrol.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +15,8 @@ import java.util.Set;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id","username"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +28,9 @@ public class User implements UserDetails {
 
     private String email;
     private String activationCode;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Book> books;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

@@ -14,7 +14,7 @@
         </thead>
 
         <tbody id="orders-list">
-        <@list.ordersList "/orders"  true/>
+        <@list.ordersList "/my-orders" false/>
         </tbody>
     </table>
 

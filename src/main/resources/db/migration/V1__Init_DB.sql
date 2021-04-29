@@ -1,4 +1,5 @@
 create sequence hibernate_sequence start 1 increment 1;
+
 create table user_role
 (
     user_id int8 not null,
@@ -22,6 +23,7 @@ create table books
     code     varchar(255),
     in_stock boolean not null,
     name     varchar(255),
+    owner_id int8,
     primary key (id)
 );
 
@@ -39,10 +41,13 @@ create table orders
 );
 
 alter table if exists orders
-    add constraint orders_user_fk foreign key (book_id) references books;
+    add constraint orders_books_fk foreign key (book_id) references books;
 
 alter table if exists orders
-    add constraint orders_book_fk foreign key (user_id) references users;
+    add constraint orders_users_fk foreign key (user_id) references users;
+
+alter table if exists books
+    add constraint books_users_fk foreign key (owner_id) references users;
 
 alter table if exists user_role
-    add constraint user_role_user_fk foreign key (user_id) references users
+    add constraint user_role_users_fk foreign key (user_id) references users

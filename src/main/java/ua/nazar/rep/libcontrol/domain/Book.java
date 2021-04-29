@@ -1,6 +1,7 @@
 package ua.nazar.rep.libcontrol.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Table(name = "books")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +19,9 @@ public class Book {
     private String code;
     private String name;
     private boolean inStock;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User owner;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders;

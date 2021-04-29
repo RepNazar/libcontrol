@@ -1,16 +1,17 @@
 package ua.nazar.rep.libcontrol.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "orders")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -17,7 +17,7 @@ public class OrderService {
     private final OrderRepo orderRepo;
 
     @Autowired
-    public OrderService(OrderRepo orderRepo, BookRepo bookRepo) {
+    public OrderService(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }
 
@@ -29,6 +29,10 @@ public class OrderService {
         return orderRepo.findAllByClient(user);
     }
 
+    public List<Order> findAllByClientId(Long user_id) {
+        return orderRepo.findAllByClientId(user_id);
+    }
+
     public void addOrder(User currentUser, Book book) {
         Order order = new Order();
         order.setStatus("Pending approval");
@@ -36,6 +40,22 @@ public class OrderService {
         order.setBook(book);
         order.setClient(currentUser);
         order.setDate(LocalDateTime.now());
+        orderRepo.save(order);
+    }
+
+    public void approveOrder(Long order_id) {
+        Order order = orderRepo.findById(order_id).get();
+        order.setApproved(true);
+        order.getBook().setInStock(false);
+        order.setStatus("Approved");
+        orderRepo.save(order);
+    }
+
+    public void confirmOrder(Long order_id) {
+        Order order = orderRepo.findById(order_id).get();
+        order.setConfirmed(true);
+        order.setFinished(true);
+        order.setStatus("Finished");
         orderRepo.save(order);
     }
 }

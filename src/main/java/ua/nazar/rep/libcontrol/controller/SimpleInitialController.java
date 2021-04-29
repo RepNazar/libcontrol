@@ -34,24 +34,6 @@ public class SimpleInitialController {
         return "greeting";
     }
 
-    @GetMapping("/my-orders")
-    public String userOrders(@AuthenticationPrincipal User user, Model model){
-        List<Order> orders = orderService.findAllByClient(user);
-
-        model.addAttribute("orders", orders);
-        return "orders";
-
-    }
-/*
-    @GetMapping("/catalog")
-    public String catalog(Model model){
-        List<Book> catalog = bookRepo.findAll();
-
-        model.addAttribute("catalog", catalog);
-
-        return "catalog";
-    }
-*/
     @GetMapping("/catalog")
     public String getBook(
             Model model,
@@ -90,14 +72,6 @@ public class SimpleInitialController {
         return "redirect:/catalog";
     }
 
-    @GetMapping("/orders")
-    public String ordersList(Model model){
-        List<Order> orders = orderService.findAll();
-
-        model.addAttribute("orders", orders);
-        return "orders";
-    }
-
     @GetMapping("/order/{book_id}")
     public String createOrder(@PathVariable Long book_id, Model model){
         Book book = bookRepo.findByIdAndInStockTrue(book_id);
@@ -115,6 +89,41 @@ public class SimpleInitialController {
         List<Order> orders = orderService.findAllByClient(user);
         model.addAttribute("orders", orders);
         return "redirect:/my-orders";
+    }
+
+    @GetMapping("/orders")
+    public String getAllOrders(Model model){
+        List<Order> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
+        return "orders";
+    }
+
+    @PostMapping("/orders")
+    public String approveOrder(@RequestParam Long order_id){
+        orderService.approveOrder(order_id);
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/my-orders")
+    public String userOrders(@AuthenticationPrincipal User user, Model model){
+        List<Order> orders = orderService.findAllByClient(user);
+
+        model.addAttribute("orders", orders);
+        return "my-orders";
+
+    }
+
+    @PostMapping("/my-orders")
+    public String confirmOrder(@RequestParam Long order_id){
+        orderService.confirmOrder(order_id);
+        return "redirect:/my-orders";
+    }
+
+    @GetMapping("/orders/{user_id}")
+    public String getOrdersByUser(@PathVariable Long user_id, Model model){
+        List<Order> orders = orderService.findAllByClientId(user_id);
+        model.addAttribute("orders", orders);
+        return "orders";
     }
 
 }
