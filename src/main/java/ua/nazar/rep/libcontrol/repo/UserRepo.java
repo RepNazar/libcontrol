@@ -9,4 +9,5 @@ import java.util.List;
 public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
     List<User> findByRolesNotContains(Role role);
+    User findByActivationCode(String code);
 }

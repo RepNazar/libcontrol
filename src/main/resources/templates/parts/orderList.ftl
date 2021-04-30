@@ -18,15 +18,17 @@
             </td>
             <td>
                 <#if !order.finished>
-                    <form method="post" action="${path}">
-                        <input type="hidden" name="order_id" value="${order.id}" />
-                        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                        <div class="form-group m-0">
-                            <button type = "submit" class ="btn btn-link p-0" style="line-height: normal!important;">
-                                <#if isEmployee>Approve<#else>Confirm</#if>
-                            </button>
-                        </div>
-                    </form>
+                    <#if isEmployee || order.approved>
+                        <form method="post" action="${path}">
+                            <input type="hidden" name="order_id" value="${order.id}"/>
+                            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                            <div class="form-group m-0">
+                                <button type="submit" class="btn btn-link p-0" style="line-height: normal!important;">
+                                    <#if isEmployee>Approve<#else>Confirm</#if>
+                                </button>
+                            </div>
+                        </form>
+                    </#if>
                 </#if>
             </td>
         </tr>

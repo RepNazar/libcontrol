@@ -6,13 +6,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.nazar.rep.libcontrol.domain.Role;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.service.UserService;
-
-import java.util.Collections;
 
 @Controller
 public class UserController {
@@ -32,8 +31,7 @@ public class UserController {
     public String addClient(
             User user,
             Model model) {
-        user.setRoles(Collections.singleton(Role.ROLE_CLIENT));
-        userService.addUser(user);
+        userService.addUser(user, Role.ROLE_CLIENT);
 
         return "redirect:/login";
     }
@@ -54,6 +52,7 @@ public class UserController {
 
         return "profile";
     }
+
     @PostMapping("/user/profile")
     public String updateProfile(
             @AuthenticationPrincipal User user,
@@ -75,8 +74,8 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String addEmployee(Model model){
-        model.addAttribute("roles",Role.values());
+    public String addEmployee(Model model) {
+        model.addAttribute("roles", Role.values());
         return "register";
     }
 
@@ -85,9 +84,24 @@ public class UserController {
             @RequestParam("role") Role role,
             User user,
             Model model) {
-        user.setRoles(Collections.singleton(role));
-        userService.addUser(user);
+        userService.addUser(user, role);
 
         return "redirect:/register";
     }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("messageType", "success");
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("messageType", "danger");
+            model.addAttribute("message", "Activation code is not found!");
+        }
+
+        return "loginPage";
+    }
+
 }
