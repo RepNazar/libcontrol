@@ -1,6 +1,11 @@
 <#import "parts/common.ftl" as c>
 <#include "parts/security.ftl">
+<#import "parts/pager.ftl" as p>
 <@c.page>
+    <#if page.getTotalElements() gt 25>
+        <@p.pager "/catalog" page/>
+    </#if>
+
     <table class="table table-sm table-striped">
         <thead>
         <tr>
@@ -19,5 +24,8 @@
         <#include "parts/bookList_.ftl" />
         </tbody>
     </table>
+    <#if page.getTotalElements() gt 25>
+        <@p.pager "/catalog" page/>
+    </#if>
 
 </@c.page>

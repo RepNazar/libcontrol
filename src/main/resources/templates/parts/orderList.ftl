@@ -1,5 +1,5 @@
 <#macro ordersList path isEmployee>
-    <#list orders as order>
+    <#list page.content as order>
         <tr data-id="${order.id}"
                 <#if order.finished>
                     class="${(order.confirmed)?string('bg-secondary','bg-danger')}"

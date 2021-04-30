@@ -1,7 +1,12 @@
 <#include "parts/security.ftl">
 <#import "parts/orderList.ftl" as list>
 <#import "parts/common.ftl" as c>
+<#import "parts/pager.ftl" as p>
+
 <@c.page>
+    <#if page.getTotalElements() gt 25>
+        <@p.pager "/my-orders" page/>
+    </#if>
 
     <table class="table table-sm table-striped">
         <thead>
@@ -17,5 +22,8 @@
         <@list.ordersList "/my-orders" false/>
         </tbody>
     </table>
+    <#if page.getTotalElements() gt 25>
+        <@p.pager "/my-orders" page/>
+    </#if>
 
 </@c.page>

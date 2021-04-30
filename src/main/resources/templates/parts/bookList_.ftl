@@ -1,8 +1,8 @@
 <#include "security.ftl">
-<#if personalized?? && catalog[0]??>
-    <h4>${catalog[0].owner.username} books:</h4>
+<#if personalized?? && page.content[0]??>
+    <h4>${page.content[0].owner.username} books:</h4>
 </#if>
-<#list catalog as book>
+<#list page.content as book>
     <#if book.owner??>
         <#if book.owner.id == currentUserId>
             <#assign redirectLink="my-books">

@@ -1,6 +1,8 @@
 package ua.nazar.rep.libcontrol.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.nazar.rep.libcontrol.domain.Book;
 import ua.nazar.rep.libcontrol.domain.Order;
@@ -8,7 +10,6 @@ import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.repo.OrderRepo;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class OrderService {
@@ -20,16 +21,16 @@ public class OrderService {
         this.orderRepo = orderRepo;
     }
 
-    public List<Order> findAllOrders() {
-        return orderRepo.findAllByForReturn(false);
+    public Page<Order> findAllOrders(Pageable pageable) {
+        return orderRepo.findAllByForReturn(false, pageable);
     }
 
-    public List<Order> findAllRequests() {
-        return orderRepo.findAllByForReturn(true);
+    public Page<Order> findAllRequests(Pageable pageable) {
+        return orderRepo.findAllByForReturn(true, pageable);
     }
 
-    public List<Order> findAllByClientId(Long user_id) {
-        return orderRepo.findAllByClientIdAndForReturn(user_id, false);
+    public Page<Order> findAllByClientId(Long user_id, Pageable pageable) {
+        return orderRepo.findAllByClientIdAndForReturn(user_id, false, pageable);
     }
 
     public void addOrder(User currentUser, Book book) {
