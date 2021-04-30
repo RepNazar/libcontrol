@@ -58,6 +58,7 @@ public class OrderService {
         orderRepo.save(order);
     }
 
+    //FIXME Remove book from owner list
     public void addRequest(User currentUser, Book book){
         Order request = new Order();
         request.setForReturn(true);

@@ -12,11 +12,10 @@ import ua.nazar.rep.libcontrol.domain.Book;
 import ua.nazar.rep.libcontrol.domain.Order;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.repo.BookRepo;
-import ua.nazar.rep.libcontrol.repo.UserRepo;
 import ua.nazar.rep.libcontrol.service.OrderService;
 
 import java.util.List;
-
+//TODO Separate controllers and add hasAuthority
 @Controller
 public class SimpleInitialController {
 
@@ -35,10 +34,7 @@ public class SimpleInitialController {
     }
 
     @GetMapping("/catalog")
-    public String getBook(
-            Model model,
-            @RequestParam(required = false) Book book
-    ) {
+    public String getBook(Model model, @RequestParam(required = false) Book book) {
         List<Book> catalog = bookRepo.findAll();
 
         model.addAttribute("catalog", catalog);
@@ -48,10 +44,7 @@ public class SimpleInitialController {
     }
 
     @PostMapping("/catalog")
-    public String commitBook(
-            Book book,
-            Model model
-    ) {
+    public String commitBook(Book book, Model model) {
         model.addAttribute("book", null);
         bookRepo.save(book);
 
@@ -76,6 +69,7 @@ public class SimpleInitialController {
     public String getOwnBooks(@AuthenticationPrincipal User user, Model model) {
         List<Book> catalog = bookRepo.findAllByOwnerId(user.getId());
         model.addAttribute("catalog", catalog);
+        model.addAttribute("personalized", true);
         return "catalog";
     }
 
@@ -83,6 +77,7 @@ public class SimpleInitialController {
     public String getClientBooks(@PathVariable User user, Model model){
         List<Book> catalog = bookRepo.findAllByOwnerId(user.getId());
         model.addAttribute("catalog", catalog);
+        model.addAttribute("personalized", true);
         return "catalog";
     }
 
@@ -129,8 +124,8 @@ public class SimpleInitialController {
         List<Order> orders = orderService.findAllByClientId(user.getId());
 
         model.addAttribute("orders", orders);
+        model.addAttribute("personalized", true);
         return "my-orders";
-
     }
 
     @PostMapping("/my-orders")
@@ -142,6 +137,7 @@ public class SimpleInitialController {
     @GetMapping("/orders/{user_id}")
     public String getOrdersByUser(@PathVariable Long user_id, Model model) {
         List<Order> orders = orderService.findAllByClientId(user_id);
+        model.addAttribute("personalized", true);
         model.addAttribute("orders", orders);
         return "orders";
     }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
+//TODO create toString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

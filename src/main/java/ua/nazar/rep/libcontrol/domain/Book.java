@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
+//TODO create toString
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
