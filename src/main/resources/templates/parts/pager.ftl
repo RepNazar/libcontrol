@@ -30,7 +30,7 @@
                     </li>
                 <#else>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}" tabindex="-1">${p}</a>
+                        <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}&filter=${filter!}" tabindex="-1">${p}</a>
                     </li>
                 </#if>
             </#list>
@@ -50,7 +50,7 @@
                     <li class="page-item">
                         <a class="page-link"
                            href="${url}?page=${(page.getNumber() gt nextTotalPages)?
-                           string('${nextTotalPages}','${page.getNumber()}')}&size=${c}"
+                           string('${nextTotalPages}','${page.getNumber()}')}&size=${c}&filter=${filter!}"
                            tabindex="-1">
                             ${c}
                         </a>

@@ -43,11 +43,13 @@ public class SimpleInitialController {
 
     @GetMapping("/catalog")
     public String getBook(@RequestParam(required = false) Book book,
-                          @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                          @RequestParam(required = false, defaultValue = "") String filter,
+                          @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                           Model model) {
-        Page<Book> page = bookRepo.findAll(pageable);
+        Page<Book> page = bookRepo.findAllByNameContains(filter ,pageable);
 
         model.addAttribute("page", page);
+        model.addAttribute("filter", filter);
         model.addAttribute("book", book);
 
         return "catalog";
@@ -57,7 +59,7 @@ public class SimpleInitialController {
     @PostMapping("/catalog")
     public String commitBook(@Valid Book book,
                              BindingResult bindingResult,
-                             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                             @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                              Model model) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
@@ -92,22 +94,26 @@ public class SimpleInitialController {
     @GetMapping("/my-books")
     public String getOwnBooks(@AuthenticationPrincipal User user,
                               @RequestParam(required = false, defaultValue = "") String filter,
-                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                              @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                               Model model) {
-        Page<Book> page = bookRepo.findAllByOwnerId(user.getId(), pageable);
+        Page<Book> page = bookRepo.findAllByOwnerIdAndNameContains(user.getId(), filter, pageable);
         model.addAttribute("page", page);
         model.addAttribute("personalized", true);
+        model.addAttribute("filter", filter);
         return "catalog";
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_LIBRARIAN','ROLE_MANAGER','ROLE_DIRECTOR')")
     @GetMapping("catalog/{user}")
     public String getClientBooks(@PathVariable User user,
-                                 @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                                 @RequestParam(required = false, defaultValue = "") String filter,
+                                 @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                                  Model model) {
-        Page<Book> page = bookRepo.findAllByOwnerId(user.getId(), pageable);
+        Page<Book> page = bookRepo.findAllByOwnerIdAndNameContains(user.getId(), filter, pageable);
         model.addAttribute("page", page);
         model.addAttribute("personalized", true);
+        model.addAttribute("filter", filter);
+
         return "catalog";
     }
 
@@ -130,7 +136,7 @@ public class SimpleInitialController {
     @PostMapping("/order/{book_id}")
     public String commitOrder(@AuthenticationPrincipal User user,
                               @PathVariable Long book_id,
-                              @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                              @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
                               Model model) {
         Book book = bookRepo.findByIdAndInStockTrue(book_id);
         orderService.addOrder(user, book);
@@ -142,7 +148,8 @@ public class SimpleInitialController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_DIRECTOR')")
     @GetMapping("/orders")
-    public String getAllOrders(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable, Model model) {
+    public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+            Model model) {
         Page<Order> page = orderService.findAllOrders(pageable);
         model.addAttribute("page", page);
         return "orders";
@@ -158,7 +165,7 @@ public class SimpleInitialController {
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @GetMapping("/my-orders")
     public String getClientOrders(@AuthenticationPrincipal User user,
-                                  @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                                  @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
                                   Model model) {
         Page<Order> page = orderService.findAllByClientId(user.getId(), pageable);
 
@@ -177,7 +184,7 @@ public class SimpleInitialController {
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/orders/{user_id}")
     public String getOrdersByUser(@PathVariable Long user_id,
-                                  @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                                  @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
                                   Model model) {
         Page<Order> page = orderService.findAllByClientId(user_id, pageable);
         model.addAttribute("personalized", true);
@@ -187,7 +194,7 @@ public class SimpleInitialController {
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     @GetMapping("/return-requests")
-    public String getAllReturnRequests(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable, Model model) {
+    public String getAllReturnRequests(@PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable, Model model) {
         Page<Order> page = orderService.findAllRequests(pageable);
         model.addAttribute("page", page);
         return "return-requests";

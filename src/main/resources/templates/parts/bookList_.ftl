@@ -1,6 +1,6 @@
 <#include "security.ftl">
-<#if personalized?? && page.content[0]??>
-    <h4>${page.content[0].owner.username} books:</h4>
+<#if personalized?? && page.content[0]?? && page.content[0].owner??>
+    <h4>${page.content[0].owner.username!} books:</h4>
 </#if>
 <#list page.content as book>
     <#if book.owner??>
@@ -27,7 +27,7 @@
                 <a href="${redirectLink}">${book.name}</a>
             </td>
             <td>
-                <#if isLibrarian>
+                <#if isLibrarian && !(personalized??)>
                     <form method="post" action="/catalog/delete">
 
                         <input type="hidden" name="id" value="${book.id}"/>
