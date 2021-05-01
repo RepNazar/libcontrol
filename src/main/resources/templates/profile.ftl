@@ -3,13 +3,18 @@
 <@c.page>
     <h5>${username}</h5>
     ${message!}
-    <br/>
     <form method="post" action="/user/profile">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">New Password:</label>
             <div class="col-sm-6">
-                <input type="password" name="password" class="form-control"
+                <input type="password" name="password"
+                       class="form-control ${(passwordError??)?string('is-invalid', '')}"
                        placeholder="Password"/>
+                <#if passwordError??>
+                    <div class="invalid-feedback">
+                        ${passwordError}
+                    </div>
+                </#if>
             </div>
         </div>
         <div class="form-group row">

@@ -5,6 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,9 @@ import ua.nazar.rep.libcontrol.domain.Role;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.service.UserService;
 
+import javax.validation.Valid;
+import java.util.Map;
+
 @Controller
 public class UserController {
     private final UserService userService;
@@ -20,20 +25,6 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/registration")
-    public String registration() {
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String addClient(
-            User user,
-            Model model) {
-        userService.addUser(user, Role.ROLE_CLIENT);
-
-        return "redirect:/login";
     }
 
     @PreAuthorize("hasAuthority('ROLE_DIRECTOR')")
@@ -69,24 +60,11 @@ public class UserController {
 
             return "redirect:/user/profile";
         } else {
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("email", email);
+            model.addAttribute("passwordError", "Passwords are different");
             return "profile";
         }
-    }
-
-    @GetMapping("/register")
-    public String addEmployee(Model model) {
-        model.addAttribute("roles", Role.values());
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public String addEmployee(
-            @RequestParam("role") Role role,
-            User user,
-            Model model) {
-        userService.addUser(user, role);
-
-        return "redirect:/register";
     }
 
     @GetMapping("/activate/{code}")

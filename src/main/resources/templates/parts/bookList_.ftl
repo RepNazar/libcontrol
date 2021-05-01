@@ -6,12 +6,17 @@
     <#if book.owner??>
         <#if book.owner.id == currentUserId>
             <#assign redirectLink="my-books">
-        <#elseif isManager || isDirector>
+        <#elseif isEmployee>
             <#assign redirectLink="/catalog/${book.owner.id}">
+        <#else>
+            <#assign redirectLink="">
         </#if>
+    <#elseif isLibrarian>
+        <#assign redirectLink="/catalog?book=${book.id}">
     <#else>
         <#assign redirectLink="">
     </#if>
+
     <#if !personalized?? || !book.inStock>
         <tr data-id="${book.id}"
             <#if !personalized??>class="${(book.inStock)?string('','bg-secondary')}"</#if>>

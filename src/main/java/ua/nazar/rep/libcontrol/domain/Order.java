@@ -3,6 +3,7 @@ package ua.nazar.rep.libcontrol.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-//TODO create toString
+//TODO maybe change toString
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

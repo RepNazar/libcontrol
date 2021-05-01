@@ -8,6 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import java.util.Collection;
 import java.util.Set;
 
@@ -16,22 +19,29 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
-@ToString(of = {"id","username"})
+@ToString(of = {"id","username", "email", "active"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Username cannot be empty")
     private String username;
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
     private boolean active;
 
+
+    @Email(message = "Email is not correct")
+    @NotBlank(message = "Email cannot be empty")
     private String email;
     private String activationCode;
 
+    //TODO Learn CascadeTypes and change this one
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Book> books;
 
+    //TODO Maybe replace Set with Single role
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)

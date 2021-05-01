@@ -10,6 +10,7 @@
         isManager = user.isManager()
         isLibrarian = user.isLibrarian()
         isDirector = user.isDirector()
+        isEmployee = isLibrarian || isManager || isDirector
         currentUserId = user.getId()
     >
 <#else>
@@ -19,6 +20,7 @@
         isManager = false
         isLibrarian = false
         isDirector = false
+        isEmployee = false
         currentUserId = -1
     >
 </#if>

@@ -17,8 +17,7 @@
                 <a href="">${order.date}</a>
             </td>
             <td>
-                <#if !order.finished>
-                    <#if isEmployee || order.approved>
+                <#if !order.finished && (isEmployee != order.approved)>
                         <form method="post" action="${path}">
                             <input type="hidden" name="order_id" value="${order.id}"/>
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -28,7 +27,6 @@
                                 </button>
                             </div>
                         </form>
-                    </#if>
                 </#if>
             </td>
         </tr>

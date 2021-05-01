@@ -1,4 +1,3 @@
-<#include "parts/security.ftl">
 <#import "parts/common.ftl" as c>
 <#import "parts/loginTemplete.ftl" as l>
 
