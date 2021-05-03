@@ -9,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,103 +17,20 @@ import ua.nazar.rep.libcontrol.domain.Book;
 import ua.nazar.rep.libcontrol.domain.Order;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.repo.BookRepo;
+import ua.nazar.rep.libcontrol.service.BookService;
 import ua.nazar.rep.libcontrol.service.OrderService;
 
-import javax.validation.Valid;
-import java.util.Map;
-
-//TODO Try to separate controllers
+//TODO Improve logic separation
 @Controller
-public class SimpleInitialController {
+public class OrderController {
 
     private final OrderService orderService;
-    private final BookRepo bookRepo;
+    private final BookService bookService;
 
     @Autowired
-    public SimpleInitialController(OrderService orderService, BookRepo bookRepo) {
+    public OrderController(OrderService orderService, BookService bookService) {
         this.orderService = orderService;
-        this.bookRepo = bookRepo;
-    }
-
-    @GetMapping("/")
-    public String greeting() {
-        return "greeting";
-    }
-
-    @GetMapping("/catalog")
-    public String getBook(@RequestParam(required = false) Book book,
-                          @RequestParam(required = false, defaultValue = "") String filter,
-                          @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
-                          Model model) {
-        Page<Book> page = bookRepo.findAllByNameContains(filter ,pageable);
-
-        model.addAttribute("page", page);
-        model.addAttribute("filter", filter);
-        model.addAttribute("book", book);
-
-        return "catalog";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @PostMapping("/catalog")
-    public String commitBook(@Valid Book book,
-                             BindingResult bindingResult,
-                             @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
-                             Model model) {
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-
-            Page<Book> page = bookRepo.findAll(pageable);
-
-            model.addAttribute("book", book);
-            model.addAttribute("page", page);
-            return "catalog";
-        } else {
-            model.addAttribute("book", null);
-            bookRepo.save(book);
-
-            Page<Book> page = bookRepo.findAll(pageable);
-
-            model.addAttribute("page", page);
-        }
-
-        return "redirect:/catalog";
-
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @PostMapping("/catalog/delete")
-    public String deleteBook(@RequestParam Long id) {
-        bookRepo.deleteById(id);
-        return "redirect:/catalog";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
-    @GetMapping("/my-books")
-    public String getOwnBooks(@AuthenticationPrincipal User user,
-                              @RequestParam(required = false, defaultValue = "") String filter,
-                              @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
-                              Model model) {
-        Page<Book> page = bookRepo.findAllByOwnerIdAndNameContains(user.getId(), filter, pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("personalized", true);
-        model.addAttribute("filter", filter);
-        return "catalog";
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROLE_LIBRARIAN','ROLE_MANAGER','ROLE_DIRECTOR')")
-    @GetMapping("catalog/{user}")
-    public String getClientBooks(@PathVariable User user,
-                                 @RequestParam(required = false, defaultValue = "") String filter,
-                                 @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
-                                 Model model) {
-        Page<Book> page = bookRepo.findAllByOwnerIdAndNameContains(user.getId(), filter, pageable);
-        model.addAttribute("page", page);
-        model.addAttribute("personalized", true);
-        model.addAttribute("filter", filter);
-
-        return "catalog";
+        this.bookService = bookService;
     }
 
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
@@ -127,7 +43,7 @@ public class SimpleInitialController {
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @GetMapping("/order/{book_id}")
     public String createOrder(@PathVariable Long book_id, Model model) {
-        Book book = bookRepo.findByIdAndInStockTrue(book_id);
+        Book book = bookService.findBookByIdAndInStockTrue(book_id);
         model.addAttribute("book", book);
         return "order";
     }
@@ -138,7 +54,7 @@ public class SimpleInitialController {
                               @PathVariable Long book_id,
                               @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
                               Model model) {
-        Book book = bookRepo.findByIdAndInStockTrue(book_id);
+        Book book = bookService.findBookByIdAndInStockTrue(book_id);
         orderService.addOrder(user, book);
 
         Page<Order> page = orderService.findAllByClientId(user.getId(), pageable);
@@ -149,7 +65,7 @@ public class SimpleInitialController {
     @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_DIRECTOR')")
     @GetMapping("/orders")
     public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
-            Model model) {
+                               Model model) {
         Page<Order> page = orderService.findAllOrders(pageable);
         model.addAttribute("page", page);
         return "orders";

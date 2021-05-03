@@ -38,7 +38,7 @@
         </tr>
         </thead>
 
-        <tbody id="records-list">
+        <tbody id="books-list">
         <#if isLibrarian && !(personalized??)>
             <form method="post" action="/catalog" enctype="multipart/form-data">
                 <#include "parts/bookEdit.ftl" />

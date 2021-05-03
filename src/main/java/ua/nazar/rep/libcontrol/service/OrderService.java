@@ -33,34 +33,34 @@ public class OrderService {
         return orderRepo.findAllByClientIdAndForReturn(user_id, false, pageable);
     }
 
-    public void addOrder(User currentUser, Book book) {
+    public Order addOrder(User currentUser, Book book) {
         Order order = new Order();
         order.setStatus("Pending approval");
         order.setBook(book);
         order.setClient(currentUser);
         order.setDate(LocalDateTime.now());
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 
-    public void approveOrder(Long order_id) {
+    public Order approveOrder(Long order_id) {
         Order order = orderRepo.findById(order_id).get();
         order.setApproved(true);
         order.getBook().setInStock(false);
         order.setStatus("Approved");
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 
-    public void confirmOrder(User currentUser, Long order_id) {
+    public Order confirmOrder(User currentUser, Long order_id) {
         Order order = orderRepo.findById(order_id).get();
         order.setConfirmed(true);
         order.getBook().setOwner(currentUser);
         order.setFinished(true);
         order.setStatus("Finished");
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 
     //FIXME Remove book from owner list
-    public void addRequest(User currentUser, Book book){
+    public Order addRequest(User currentUser, Book book){
         Order request = new Order();
         request.setForReturn(true);
         request.setStatus("Pending approval");
@@ -68,15 +68,15 @@ public class OrderService {
         request.setConfirmed(true);
         request.getBook().setOwner(null);
         request.setDate(LocalDateTime.now());
-        orderRepo.save(request);
+        return orderRepo.save(request);
     }
 
-    public void approveRequest(Long order_id){
+    public Order approveRequest(Long order_id){
         Order order = orderRepo.findById(order_id).get();
         order.setApproved(true);
         order.getBook().setInStock(true);
         order.setFinished(true);
         order.setStatus("Finished");
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 }
