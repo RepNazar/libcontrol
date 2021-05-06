@@ -80,6 +80,36 @@ public class BookControllerTest {
 
     @Test
     @WithUserDetails(value = "testLibrarian")
+    public void filterUsersBooks() throws Exception {
+        this.mockMvc.perform(get("/catalog/3").param("filter", ""))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(2))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='4']/td[@data-type='code']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='4']/td[@data-type='name']")
+                                .exists());
+
+        this.mockMvc.perform(get("/catalog/3").param("filter", "1"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(1));
+        this.mockMvc.perform(get("/catalog/2").param("filter", ""))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(1));
+    }
+
+    @Test
+    @WithUserDetails(value = "testLibrarian")
     public void addBookToListTest() throws Exception {
         this.mockMvc.perform(get("/catalog"))
                 .andDo(print())
