@@ -33,11 +33,8 @@ public class OrderService {
         return orderRepo.findAllByClientIdAndForReturn(user_id, false, pageable);
     }
 
-    public Order addOrder(User currentUser, Book book) {
-        Order order = new Order();
+    public Order addOrder(Order order) {
         order.setStatus("Pending approval");
-        order.setBook(book);
-        order.setClient(currentUser);
         order.setDate(LocalDateTime.now());
         return orderRepo.save(order);
     }
@@ -60,11 +57,9 @@ public class OrderService {
     }
 
     //FIXME Remove book from owner list
-    public Order addRequest(User currentUser, Book book){
-        Order request = new Order();
+    public Order addRequest(Order request){
         request.setForReturn(true);
         request.setStatus("Pending approval");
-        request.setBook(book);
         request.setConfirmed(true);
         request.getBook().setOwner(null);
         request.setDate(LocalDateTime.now());

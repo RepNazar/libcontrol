@@ -35,8 +35,8 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @PostMapping("my-books")
-    public String commitRequest(@AuthenticationPrincipal User currentUser, Book book) {
-        orderService.addRequest(currentUser, book);
+    public String commitRequest(@AuthenticationPrincipal User currentUser, Order order) {
+        orderService.addRequest(order);
         return "redirect:/my-books";
     }
 
@@ -51,11 +51,10 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @PostMapping("/order/{book_id}")
     public String commitOrder(@AuthenticationPrincipal User user,
-                              @PathVariable Long book_id,
+                              Order order,
                               @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
                               Model model) {
-        Book book = bookService.findBookByIdAndInStockTrue(book_id);
-        orderService.addOrder(user, book);
+        orderService.addOrder(order);
 
         Page<Order> page = orderService.findAllByClientId(user.getId(), pageable);
         model.addAttribute("page", page);

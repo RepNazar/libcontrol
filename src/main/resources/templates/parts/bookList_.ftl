@@ -46,11 +46,8 @@
                 <#else>
                     <#if book.owner?? && book.owner.id == currentUserId>
                         <form method="post" action="/my-books" enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="<#if book??>${book.id!}</#if>"/>
-                            <input type="hidden" name="code" value="${book.code}"/>
-                            <input type="hidden" name="name" value="${book.name}"/>
-                            <input type="hidden" name="inStock" <#if book??>value="${book.inStock?string('yes','no')}"
-                                   <#else>value="true"</#if> />
+                            <input type="hidden" name="book" value="${book.id}"/>
+                            <input type="hidden" name="client" value="${currentUserId}">
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                             <div class="form-group m-0">
                                 <button type="submit" class="btn btn-primary">Return</button>
