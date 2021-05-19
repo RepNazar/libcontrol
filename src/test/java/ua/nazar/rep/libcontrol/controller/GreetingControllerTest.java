@@ -1,4 +1,4 @@
-package ua.nazar.rep.libcontrol;
+package ua.nazar.rep.libcontrol.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -14,22 +15,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class LibcontrolApplicationTests {
-
+class GreetingControllerTest {
     private final MockMvc mockMvc;
 
     @Autowired
-    LibcontrolApplicationTests(MockMvc mockMvc) {
+    GreetingControllerTest(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
     }
 
     @Test
-    void contextLoads() throws Exception {
+    void greeting() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsStringIgnoringCase("lib")));
-
+                .andExpect(content().string(containsString("lib")))
+                .andExpect(content().string(containsStringIgnoringCase("Greeting")));
     }
-
 }

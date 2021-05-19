@@ -14,8 +14,6 @@ import ua.nazar.rep.libcontrol.repo.OrderRepo;
 
 import java.util.Collections;
 
-import static org.mockito.ArgumentMatchers.any;
-
 @SpringBootTest
 public class OrderServiceTest {
     private final OrderService orderService;
@@ -86,6 +84,8 @@ public class OrderServiceTest {
         Assertions.assertEquals("Approved", testOrder.getStatus());
 
         Mockito.verify(orderRepo, Mockito.times(1)).save(testOrder);
+        Mockito.verify(orderRepo, Mockito.times(1)).
+                deleteAllByBookIdAndApprovedFalse(testOrder.getBook().getId());
     }
 
     @Test
@@ -96,7 +96,6 @@ public class OrderServiceTest {
         orderService.confirmOrder(testUser, 1L);
 
         Assertions.assertTrue(testOrder.isConfirmed());
-
         Assertions.assertTrue(testOrder.isFinished());
         Assertions.assertNotNull(testOrder.getBook().getOwner());
         Assertions.assertEquals(testUser, testOrder.getBook().getOwner());

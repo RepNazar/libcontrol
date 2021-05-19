@@ -36,7 +36,7 @@ public class RegistrationController {
             @Valid User user,
             BindingResult bindingResult,
             Model model) {
-        if(addUserFailed(Role.ROLE_CLIENT, passwordConfirm, user, bindingResult, model)){
+        if (addUserFailed(Role.ROLE_CLIENT, passwordConfirm, user, bindingResult, model)) {
             return "registration";
         }
         return "redirect:/login";
@@ -57,8 +57,9 @@ public class RegistrationController {
             @Valid User user,
             BindingResult bindingResult,
             Model model) {
-        if(addUserFailed(role, passwordConfirm, user, bindingResult, model)){
+        if (addUserFailed(role, passwordConfirm, user, bindingResult, model)) {
             model.addAttribute("roles", Role.values());
+            model.addAttribute("user", user);
             return "register";
         }
         return "redirect:/register";

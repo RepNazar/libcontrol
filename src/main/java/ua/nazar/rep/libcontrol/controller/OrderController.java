@@ -63,7 +63,7 @@ public class OrderController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_DIRECTOR')")
     @GetMapping("/orders")
-    public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+    public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
                                Model model) {
         Page<Order> page = orderService.findAllOrders(pageable);
         model.addAttribute("page", page);

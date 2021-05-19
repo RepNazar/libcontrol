@@ -8,4 +8,5 @@ import ua.nazar.rep.libcontrol.domain.Order;
 public interface OrderRepo extends JpaRepository<Order, Long> {
     Page<Order> findAllByForReturn(boolean forReturn, Pageable pageable);
     Page<Order> findAllByClientIdAndForReturn(Long client_id, boolean forReturn, Pageable pageable);
+    Long deleteAllByBookIdAndApprovedFalse(Long bookId);
 }

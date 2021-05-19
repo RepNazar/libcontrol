@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ua.nazar.rep.libcontrol.domain.Book;
 import ua.nazar.rep.libcontrol.domain.Order;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.repo.OrderRepo;
@@ -42,9 +41,14 @@ public class OrderService {
     public Order approveOrder(Long order_id) {
         Order order = orderRepo.findById(order_id).get();
         order.setApproved(true);
-        order.getBook().setInStock(false);
         order.setStatus("Approved");
-        return orderRepo.save(order);
+        order.getBook().setInStock(false);
+
+        Order savedOrder = orderRepo.save(order);
+
+        orderRepo.deleteAllByBookIdAndApprovedFalse(order.getBook().getId());
+
+        return savedOrder;
     }
 
     public Order confirmOrder(User currentUser, Long order_id) {
@@ -56,18 +60,20 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
-    //FIXME Remove book from owner list
     public Order addRequest(Order request){
         request.setForReturn(true);
         request.setStatus("Pending approval");
         request.setConfirmed(true);
-        request.getBook().setOwner(null);
         request.setDate(LocalDateTime.now());
+
+        request.getBook().setOwner(null);
+
         return orderRepo.save(request);
     }
 
     public Order approveRequest(Long order_id){
         Order order = orderRepo.findById(order_id).get();
+
         order.setApproved(true);
         order.getBook().setInStock(true);
         order.setFinished(true);
