@@ -9,15 +9,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import ua.nazar.rep.libcontrol.controller.BookController;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -142,4 +140,76 @@ public class BookControllerTest {
                         xpath("//*[@id='books-list']/tr[@data-id='10']/td[@data-type='name']/a")
                                 .string("2"));
     }
+
+    @Test
+    @WithUserDetails(value = "testLibrarian")
+    public void removeBookFromListTest() throws Exception {
+        this.mockMvc.perform(get("/catalog"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(xpath("//*[@id='books-list']/tr").nodeCount(5));
+
+        this.mockMvc.perform(post("/catalog/delete").param("id", "2").with(csrf()))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/catalog"));
+
+        this.mockMvc.perform(get("/catalog"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(4))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='2']")
+                                .doesNotExist())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='2']/td[@data-type='code']/a")
+                                .doesNotExist())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='2']/td[@data-type='name']/a")
+                                .doesNotExist());
+    }
+
+    @Test
+    @WithUserDetails(value = "testLibrarian")
+    public void notEmptyValidationTest() throws Exception {
+        this.mockMvc.perform(get("/catalog"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(xpath("//*[@id='books-list']/tr").nodeCount(5));
+
+        MockHttpServletRequestBuilder multipart = multipart("/catalog")
+                .param("code", "")
+                .param("name", "")
+                .with(csrf());
+
+        this.mockMvc.perform(multipart)
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(xpath("//*[contains(@class, 'form-control is-invalid')]")
+                        .nodeCount(2))
+                .andExpect(xpath("//*[contains(@class, 'invalid-feedback')]")
+                        .nodeCount(2))
+                .andExpect(content().string(containsString("Code cannot be empty")))
+                .andExpect(content().string(containsString("Name cannot be empty")));
+
+        this.mockMvc.perform(get("/catalog"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(5))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='10']")
+                                .doesNotExist())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='10']/td[@data-type='code']/a")
+                                .doesNotExist())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='10']/td[@data-type='name']/a")
+                                .doesNotExist());
+    }
+
 }
