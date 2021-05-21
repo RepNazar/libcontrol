@@ -48,7 +48,7 @@ public class BookControllerTest {
 
     @Test
     @WithUserDetails(value = "testClient")
-    public void filterBooksTest() throws Exception {
+    public void filterBooksByNameTest() throws Exception {
         this.mockMvc.perform(get("/catalog").param("filter", "0"))
                 .andDo(print())
                 .andExpect(authenticated())
@@ -77,6 +77,81 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = "testClient")
+    public void filterBooksByGenreTest() throws Exception {
+        this.mockMvc.perform(get("/catalog").param("genreFilter", "w"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(2))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='1']/td[@data-type='code']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='1']/td[@data-type='name']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='1']/td[@data-type='genre']")
+                                .exists());
+
+        this.mockMvc.perform(get("/catalog").param("genreFilter", "f"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(3));
+        this.mockMvc.perform(get("/my-books").param("filter", "a"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(1));
+    }
+
+    @Test
+    @WithUserDetails(value = "testClient")
+    public void filterBooksByNameAndGenreTest() throws Exception {
+        this.mockMvc.perform(
+                get("/catalog")
+                        .param("filter", "3")
+                        .param("genreFilter", "f"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(2))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='3']/td[@data-type='code']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='3']/td[@data-type='name']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='3']/td[@data-type='genre']")
+                                .exists());
+
+        this.mockMvc.perform(
+                get("/catalog")
+                        .param("genreFilter", "f")
+                        .param("filter", "2"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(1));
+        this.mockMvc.perform(
+                get("/my-books")
+                        .param("genreFilter", "f")
+                        .param("filter", "1"))
+                .andDo(print())
+                .andExpect(authenticated())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr")
+                                .nodeCount(1));
+    }
+
+    @Test
     @WithUserDetails(value = "testLibrarian")
     public void filterUsersBooks() throws Exception {
         this.mockMvc.perform(get("/catalog/3").param("filter", ""))
@@ -90,6 +165,9 @@ public class BookControllerTest {
                                 .exists())
                 .andExpect(
                         xpath("//*[@id='books-list']/tr[@data-id='4']/td[@data-type='name']")
+                                .exists())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='4']/td[@data-type='genre']")
                                 .exists());
 
         this.mockMvc.perform(get("/catalog/3").param("filter", "1"))
@@ -117,6 +195,7 @@ public class BookControllerTest {
         MockHttpServletRequestBuilder multipart = multipart("/catalog")
                 .param("code", "1")
                 .param("name", "2")
+                .param("genre", "3")
                 .with(csrf());
 
         this.mockMvc.perform(multipart)
@@ -138,7 +217,10 @@ public class BookControllerTest {
                                 .string("1"))
                 .andExpect(
                         xpath("//*[@id='books-list']/tr[@data-id='10']/td[@data-type='name']/a")
-                                .string("2"));
+                                .string("2"))
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='10']/td[@data-type='genre']/a")
+                                .string("3"));
     }
 
     @Test
@@ -169,6 +251,9 @@ public class BookControllerTest {
                                 .doesNotExist())
                 .andExpect(
                         xpath("//*[@id='books-list']/tr[@data-id='2']/td[@data-type='name']/a")
+                                .doesNotExist())
+                .andExpect(
+                        xpath("//*[@id='books-list']/tr[@data-id='2']/td[@data-type='genre']/a")
                                 .doesNotExist());
     }
 
@@ -183,6 +268,7 @@ public class BookControllerTest {
         MockHttpServletRequestBuilder multipart = multipart("/catalog")
                 .param("code", "")
                 .param("name", "")
+                .param("genre", "")
                 .with(csrf());
 
         this.mockMvc.perform(multipart)

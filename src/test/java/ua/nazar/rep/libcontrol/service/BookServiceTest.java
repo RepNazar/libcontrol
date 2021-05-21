@@ -23,42 +23,41 @@ class BookServiceTest {
     private BookRepo bookRepo;
 
     private final Pageable pageableMock = Mockito.mock(Pageable.class);
-    private final User userMock = Mockito.mock(User.class);
 
     @Test
-    void findAllBooks() {
-        bookService.findAllBooks(pageableMock);
+    void findAllTest() {
+        bookService.findAll(pageableMock);
         Mockito.verify(bookRepo, Mockito.times(1)).findAll(pageableMock);
     }
 
     @Test
-    void findAllBooksByNameContains() {
-        bookService.findAllBooksByNameContains("qwer", pageableMock);
-        Mockito.verify(bookRepo, Mockito.times(1)).findAllByNameContains("qwer", pageableMock);
+    void findAllByNameContainsTest() {
+        bookService.findAllByFilters("qwer", "req", pageableMock);
+        Mockito.verify(bookRepo, Mockito.times(1)).findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase("qwer", "req", pageableMock);
     }
 
     @Test
-    void findBookByIdAndInStockTrue() {
-        bookService.findBookByIdAndInStockTrue(1L);
+    void findByIdAndInStockTrueTest() {
+        bookService.findByIdAndInStockTrue(1L);
         Mockito.verify(bookRepo, Mockito.times(1)).findByIdAndInStockTrue(1L);
     }
 
     @Test
-    void findAllBooksByOwnerIdAndNameContains() {
-        bookService.findAllBooksByOwnerIdAndNameContains(1L, "qwer", pageableMock);
-        Mockito.verify(bookRepo, Mockito.times(1)).findAllByOwnerIdAndNameContains(1L,"qwer", pageableMock);
+    void findAllByOwnerIdAndNameContainsTest() {
+        bookService.findAllByOwnerIdAndFilters(1L, "qwer", "req", pageableMock);
+        Mockito.verify(bookRepo, Mockito.times(1)).findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase(1L, "qwer", "req", pageableMock);
     }
 
     @Test
-    void deleteById() {
+    void deleteByIdTest() {
         bookService.deleteById(1L);
         Mockito.verify(bookRepo, Mockito.times(1)).deleteById(1L);
     }
 
     @Test
-    void saveBook() {
+    void saveTest() {
         Book book = Mockito.mock(Book.class);
-        bookService.saveBook(book);
+        bookService.save(book);
         Mockito.verify(bookRepo, Mockito.times(1)).save(book);
     }
 }

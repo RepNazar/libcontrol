@@ -16,27 +16,27 @@ public class BookService {
         this.bookRepo = bookRepo;
     }
 
-    public Page<Book> findAllBooks(Pageable pageable){
+    public Page<Book> findAll(Pageable pageable){
         return bookRepo.findAll(pageable);
     }
 
-    public Page<Book> findAllBooksByNameContains(String filter, Pageable pageable){
-        return bookRepo.findAllByNameContains(filter, pageable);
+    public Page<Book> findAllByFilters(String filter, String genreFilter, Pageable pageable){
+        return bookRepo.findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase(filter, genreFilter, pageable);
     }
 
-    public Book findBookByIdAndInStockTrue(Long id){
+    public Book findByIdAndInStockTrue(Long id){
         return bookRepo.findByIdAndInStockTrue(id);
     }
 
-    public Page<Book> findAllBooksByOwnerIdAndNameContains(Long ownerId, String filter, Pageable pageable){
-        return bookRepo.findAllByOwnerIdAndNameContains(ownerId, filter, pageable);
+    public Page<Book> findAllByOwnerIdAndFilters(Long ownerId, String filter, String genreFilter, Pageable pageable){
+        return bookRepo.findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase(ownerId, filter, genreFilter, pageable);
     }
 
     public void deleteById(Long id){
         bookRepo.deleteById(id);
     }
 
-    public Book saveBook(Book book){
+    public Book save(Book book){
         return bookRepo.save(book);
     }
 

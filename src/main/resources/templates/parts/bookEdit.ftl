@@ -26,6 +26,14 @@
         </div>
     </td>
     <td>
+        <div class="form-group m-0">
+            <input type="text" name="genre"
+                   value="<#if book??>${book.genre}</#if>"
+                   class="form-control"
+                   placeholder="Name"/>
+        </div>
+    </td>
+    <td>
         <input type="hidden" name="id" value="<#if book??>${book.id!}</#if>"/>
         <input type="hidden" name="inStock"
                 <#if book??>

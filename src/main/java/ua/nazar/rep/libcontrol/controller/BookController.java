@@ -33,12 +33,14 @@ public class BookController {
     @GetMapping("/catalog")
     public String getBook(@RequestParam(required = false) Book book,
                           @RequestParam(required = false, defaultValue = "") String filter,
+                          @RequestParam(required = false, defaultValue = "") String genreFilter,
                           @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                           Model model) {
-        Page<Book> page = bookService.findAllBooksByNameContains(filter ,pageable);
+        Page<Book> page = bookService.findAllByFilters(filter, genreFilter, pageable);
 
         model.addAttribute("page", page);
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter", filter.isEmpty() ? null : filter);
+        model.addAttribute("genreFilter", genreFilter.isEmpty() ? null : genreFilter);
         model.addAttribute("book", book);
 
         return "catalog";
@@ -54,16 +56,16 @@ public class BookController {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
 
-            Page<Book> page = bookService.findAllBooks(pageable);
+            Page<Book> page = bookService.findAll(pageable);
 
             model.addAttribute("book", book);
             model.addAttribute("page", page);
             return "catalog";
         } else {
             model.addAttribute("book", null);
-            bookService.saveBook(book);
+            bookService.save(book);
 
-            Page<Book> page = bookService.findAllBooks(pageable);
+            Page<Book> page = bookService.findAll(pageable);
 
             model.addAttribute("page", page);
         }
@@ -83,12 +85,14 @@ public class BookController {
     @GetMapping("/my-books")
     public String getOwnBooks(@AuthenticationPrincipal User user,
                               @RequestParam(required = false, defaultValue = "") String filter,
+                              @RequestParam(required = false, defaultValue = "") String genreFilter,
                               @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                               Model model) {
-        Page<Book> page = bookService.findAllBooksByOwnerIdAndNameContains(user.getId(), filter, pageable);
+        Page<Book> page = bookService.findAllByOwnerIdAndFilters(user.getId(), filter, genreFilter, pageable);
         model.addAttribute("page", page);
         model.addAttribute("personalized", true);
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter", filter.isEmpty() ? null : filter);
+        model.addAttribute("genreFilter", genreFilter.isEmpty() ? null : genreFilter);
         return "catalog";
     }
 
@@ -96,12 +100,14 @@ public class BookController {
     @GetMapping("catalog/{user}")
     public String getClientBooks(@PathVariable User user,
                                  @RequestParam(required = false, defaultValue = "") String filter,
+                                 @RequestParam(required = false, defaultValue = "") String genreFilter,
                                  @PageableDefault(sort = {"name"}, size = 25) Pageable pageable,
                                  Model model) {
-        Page<Book> page = bookService.findAllBooksByOwnerIdAndNameContains(user.getId(), filter, pageable);
+        Page<Book> page = bookService.findAllByOwnerIdAndFilters(user.getId(), filter, genreFilter, pageable);
         model.addAttribute("page", page);
         model.addAttribute("personalized", true);
-        model.addAttribute("filter", filter);
+        model.addAttribute("filter", filter.isEmpty() ? null : filter);
+        model.addAttribute("genreFilter", genreFilter.isEmpty() ? null : genreFilter);
 
         return "catalog";
     }

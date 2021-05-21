@@ -14,6 +14,14 @@
     <#else>
         <#assign body = 1..page.getTotalPages()>
     </#if>
+    <#assign filterParam = ''>
+    <#assign genreParam = ''>
+    <#if filter?? && filter?has_content>
+        <#assign filterParam = '&filter=' + filter>
+    </#if>
+    <#if genreFilter?? && genreFilter?has_content>
+        <#assign genreParam = '&genre=' + genreFilter>
+    </#if>
     <div class="mt-3">
         <ul class="pagination" style="float: left;">
             <li class="page-item disabled">
@@ -30,7 +38,9 @@
                     </li>
                 <#else>
                     <li class="page-item">
-                        <a class="page-link" href="${url}?page=${p - 1}&size=${page.getSize()}&filter=${filter!}" tabindex="-1">${p}</a>
+                        <a class="page-link"
+                           href="${url}?page=${p - 1}&size=${page.getSize()}${filterParam}${genreParam}"
+                           tabindex="-1">${p}</a>
                     </li>
                 </#if>
             </#list>
@@ -50,7 +60,8 @@
                     <li class="page-item">
                         <a class="page-link"
                            href="${url}?page=${(page.getNumber() gt nextTotalPages)?
-                           string('${nextTotalPages}','${page.getNumber()}')}&size=${c}&filter=${filter!}"
+                           string('${nextTotalPages}','${page.getNumber()}')}
+                           &size=${c}${filterParam}${genreParam}"
                            tabindex="-1">
                             ${c}
                         </a>

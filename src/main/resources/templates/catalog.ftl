@@ -13,17 +13,41 @@
         <#assign currentUrl = "/catalog">
     </#if>
 
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <form method="get" action="${currentUrl}" class="form-inline">
-                <input type="text" name="filter" class="form-control"
-                       value="${filter!}" placeholder="Name contains"/>
-                <button type="submit" class="btn btn-primary ml-2">
-                    Search
-                </button>
-            </form>
+
+    <form method="get" action="${currentUrl}">
+        <div class="row">
+            <div class="col">
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <label for="nameContainsFilterInput">Name Contains:</label>
+                        <input id="nameContainsFilterInput" type="text" name="filter"
+                               class="form-control" value="${filter!}" placeholder="Name contains"
+                        />
+                    </div>
+                    <div class="col mt-auto">
+                        <button type="submit" class="btn btn-primary">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-row">
+                    <div class="form-group col-md-5 float-right ml-auto">
+                        <label for="genreContainsFilterInput">Genre:</label>
+                        <input id="genreContainsFilterInput" type="text" name="genreFilter"
+                               class="form-control" value="${genreFilter!}" placeholder="Genre"
+                        />
+                    </div>
+                    <div class="form-group col-md-1 mt-auto mr-md-5">
+                        <button type="submit" class="btn btn-primary">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </form>
 
     <#if page.getTotalElements() gt 25>
         <@p.pager currentUrl page/>
@@ -34,6 +58,7 @@
         <tr>
             <th scope="col">Code</th>
             <th scope="col">Name</th>
+            <th scope="col">Genre</th>
             <th scope="col"></th>
         </tr>
         </thead>

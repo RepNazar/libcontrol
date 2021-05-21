@@ -25,6 +25,10 @@
         <td data-type="name">
             <a href="${redirectLink}">${book.name}</a>
         </td>
+        <td data-type="genre">
+            <a href="${redirectLink}">${book.genre!}</a>
+        </td>
+
         <td>
             <#if isLibrarian && !(personalized??)>
                 <form method="post" action="/catalog/delete">

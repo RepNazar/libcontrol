@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 //TODO maybe change toString
-@ToString(of = {"id","code","name","inStock","owner"})
+@ToString(of = {"id", "code", "name", "genre", "inStock", "owner"})
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +24,7 @@ public class Book {
     private String code;
     @NotBlank(message = "Name cannot be empty")
     private String name;
+    private String genre;
     private boolean inStock;
 
     @ManyToOne(fetch = FetchType.EAGER)

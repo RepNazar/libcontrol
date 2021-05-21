@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ua.nazar.rep.libcontrol.domain.Book;
 import ua.nazar.rep.libcontrol.domain.Order;
 import ua.nazar.rep.libcontrol.domain.User;
-import ua.nazar.rep.libcontrol.repo.BookRepo;
 import ua.nazar.rep.libcontrol.service.BookService;
 import ua.nazar.rep.libcontrol.service.OrderService;
 
@@ -43,7 +42,7 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @GetMapping("/order/{book_id}")
     public String createOrder(@PathVariable Long book_id, Model model) {
-        Book book = bookService.findBookByIdAndInStockTrue(book_id);
+        Book book = bookService.findByIdAndInStockTrue(book_id);
         model.addAttribute("book", book);
         return "order";
     }
