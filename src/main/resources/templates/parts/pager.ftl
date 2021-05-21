@@ -56,12 +56,11 @@
                         <a class="page-link" href="#" tabindex="-1">${c}</a>
                     </li>
                 <#else>
-                    <#assign nextTotalPages=(page.getTotalPages()*page.getSize()/c)?floor>
+                    <#assign nextTotalPages=((page.getTotalPages()*page.getSize()/c)-1)?ceiling>
                     <li class="page-item">
                         <a class="page-link"
                            href="${url}?page=${(page.getNumber() gt nextTotalPages)?
-                           string('${nextTotalPages}','${page.getNumber()}')}
-                           &size=${c}${filterParam}${genreParam}"
+                           string('${nextTotalPages}','${page.getNumber()}')}&size=${c}${filterParam}${genreParam}"
                            tabindex="-1">
                             ${c}
                         </a>

@@ -37,14 +37,16 @@
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <div class="form-group m-0">
                         <button type="submit" class="btn btn-link p-0" style="line-height: normal!important;">
-                            Delete
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 </form>
             </#if>
             <#if book.inStock>
                 <#if isClient>
-                    <a href="/order/${book.id}" class="btn btn-link">Order</a>
+                    <a href="/order/${book.id}" class="btn btn-link p-0">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                 </#if>
             <#else>
                 <#if book.owner?? && book.owner.id == currentUserId>
@@ -53,7 +55,9 @@
                         <input type="hidden" name="client" value="${currentUserId}"/>
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         <div class="form-group m-0">
-                            <button type="submit" class="btn btn-primary">Return</button>
+                            <button type="submit" class="btn btn-link p-0">
+                                <i class="fas fa-undo"></i>
+                            </button>
                         </div>
                     </form>
                 </#if>

@@ -23,7 +23,7 @@
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                             <div class="form-group m-0">
                                 <button type="submit" class="btn btn-link p-0" style="line-height: normal!important;">
-                                    <#if isEmployee>Approve<#else>Confirm</#if>
+                                    <i class="fas fa-check-double"></i>
                                 </button>
                             </div>
                         </form>

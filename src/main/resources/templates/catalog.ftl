@@ -26,7 +26,7 @@
                     </div>
                     <div class="col mt-auto">
                         <button type="submit" class="btn btn-primary">
-                            Search
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
@@ -36,12 +36,12 @@
                     <div class="form-group col-md-5 float-right ml-auto">
                         <label for="genreContainsFilterInput">Genre:</label>
                         <input id="genreContainsFilterInput" type="text" name="genreFilter"
-                               class="form-control" value="${genreFilter!}" placeholder="Genre"
+                               class="form-control" value="${genreFilter!}" placeholder="Genres"
                         />
                     </div>
-                    <div class="form-group col-md-1 mt-auto mr-md-5">
+                    <div class="form-group col-md-1 mt-auto mr-md-2">
                         <button type="submit" class="btn btn-primary">
-                            Search
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </div>
