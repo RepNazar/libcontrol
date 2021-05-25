@@ -1,4 +1,5 @@
 <#include "parts/security.ftl">
+<#include "parts/security.ftl">
 <#import "parts/orderList.ftl" as list>
 <#import "parts/common.ftl" as c>
 <#import "parts/pager.ftl" as p>
@@ -12,6 +13,8 @@
         <thead>
         <tr>
             <th scope="col">Id</th>
+            <th scope="col">Book</th>
+            <th scope="col">Client</th>
             <th scope="col">Status</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
@@ -19,7 +22,7 @@
         </thead>
 
         <tbody id="orders-list">
-        <@list.ordersList "/my-orders" false/>
+        <@list.ordersList "/my-orders" isManager isClient />
         </tbody>
     </table>
     <#if page.getTotalElements() gt 25>

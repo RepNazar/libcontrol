@@ -1,4 +1,4 @@
-<#macro ordersList path isEmployee>
+<#macro ordersList path isManager isClient>
     <#list page.content as order>
         <tr data-id="${order.id}"
                 <#if order.finished>
@@ -8,25 +8,34 @@
                 </#if>
         >
             <td data-type="id">
-                <a href="">${order.id}</a>
+                <span>${order.id}</span>
+            </td>
+            <td data-type="book-code">
+                <span>${order.book.code}</span>
+            </td>
+            <td data-type="username">
+                <a class="text-dark" href="/catalog/${order.client.id}">
+                    ${order.client.username}
+                </a>
             </td>
             <td data-type="status">
-                <a href="">${order.status}</a>
+                <span>${order.status!}</span>
             </td>
             <td data-type="date">
-                <a href="">${order.date}</a>
+                <span>${order.date!}</span>
             </td>
             <td>
-                <#if !order.finished && (isEmployee != order.approved)>
-                        <form method="post" action="${path}">
-                            <input type="hidden" name="order_id" value="${order.id}"/>
-                            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                            <div class="form-group m-0">
-                                <button type="submit" class="btn btn-link p-0" style="line-height: normal!important;">
-                                    <i class="fas fa-check-double"></i>
-                                </button>
-                            </div>
-                        </form>
+                <#if !order.finished &&
+                (isManager && !order.approved || isClient && order.approved)>
+                    <form method="post" action="${path}">
+                        <input type="hidden" name="order_id" value="${order.id}"/>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                        <div class="form-group m-0">
+                            <button type="submit" class="btn btn-link p-0" style="line-height: normal!important;color: black">
+                                <i class="fas fa-check-double"></i>
+                            </button>
+                        </div>
+                    </form>
                 </#if>
             </td>
         </tr>

@@ -32,12 +32,36 @@ public class OrderController {
         this.bookService = bookService;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
-    @PostMapping("my-books")
-    public String commitRequest(@AuthenticationPrincipal User currentUser, Order order) {
-        orderService.addRequest(order);
-        return "redirect:/my-books";
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_DIRECTOR')")
+    @GetMapping("/orders")
+    public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
+                               Model model) {
+        Page<Order> page = orderService.findAllOrders(pageable);
+        model.addAttribute("page", page);
+        return "orders";
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_DIRECTOR')")
+    @GetMapping("/orders/{user_id}")
+    public String getOrdersByUser(@PathVariable Long user_id,
+                                  @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
+                                  Model model) {
+        Page<Order> page = orderService.findAllOrdersByClientId(user_id, pageable);
+        model.addAttribute("page", page);
+        return "orders";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @GetMapping("/my-orders")
+    public String getClientOrders(@AuthenticationPrincipal User user,
+                                  @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                                  Model model) {
+        Page<Order> page = orderService.findAllOrdersByClientId(user.getId(), pageable);
+
+        model.addAttribute("page", page);
+        return "my-orders";
+    }
+
 
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @GetMapping("/order/{book_id}")
@@ -55,18 +79,9 @@ public class OrderController {
                               Model model) {
         orderService.addOrder(order);
 
-        Page<Order> page = orderService.findAllByClientId(user.getId(), pageable);
+        Page<Order> page = orderService.findAllOrdersByClientId(user.getId(), pageable);
         model.addAttribute("page", page);
         return "redirect:/my-orders";
-    }
-
-    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_DIRECTOR')")
-    @GetMapping("/orders")
-    public String getAllOrders(@PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
-                               Model model) {
-        Page<Order> page = orderService.findAllOrders(pageable);
-        model.addAttribute("page", page);
-        return "orders";
     }
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
@@ -77,41 +92,48 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_CLIENT')")
-    @GetMapping("/my-orders")
-    public String getClientOrders(@AuthenticationPrincipal User user,
-                                  @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
-                                  Model model) {
-        Page<Order> page = orderService.findAllByClientId(user.getId(), pageable);
-
-        model.addAttribute("page", page);
-        model.addAttribute("personalized", true);
-        return "my-orders";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
     @PostMapping("/my-orders")
     public String confirmOrder(@AuthenticationPrincipal User currentUser, @RequestParam Long order_id) {
         orderService.confirmOrder(currentUser, order_id);
         return "redirect:/my-orders";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    @GetMapping("/orders/{user_id}")
-    public String getOrdersByUser(@PathVariable Long user_id,
-                                  @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
-                                  Model model) {
-        Page<Order> page = orderService.findAllByClientId(user_id, pageable);
-        model.addAttribute("personalized", true);
-        model.addAttribute("page", page);
-        return "orders";
-    }
 
-    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_DIRECTOR')")
     @GetMapping("/return-requests")
     public String getAllReturnRequests(@PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable, Model model) {
         Page<Order> page = orderService.findAllRequests(pageable);
         model.addAttribute("page", page);
         return "return-requests";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER', 'ROLE_DIRECTOR')")
+    @GetMapping("/return-requests/{user_id}")
+    public String getReturnRequestsByUser(@PathVariable Long user_id,
+                                          @PageableDefault(sort = {"finished", "approved", "date"}, size = 25) Pageable pageable,
+                                          Model model) {
+        Page<Order> page = orderService.findAllRequestsByClientId(user_id, pageable);
+        model.addAttribute("page", page);
+        return "return-requests";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @GetMapping("/my-requests")
+    public String getClientReturnRequests(@AuthenticationPrincipal User user,
+                                          @PageableDefault(sort = {"date"}, direction = Sort.Direction.DESC, size = 25) Pageable pageable,
+                                          Model model) {
+        Page<Order> page = orderService.findAllRequestsByClientId(user.getId(), pageable);
+
+        model.addAttribute("page", page);
+        return "my-requests";
+    }
+
+
+    @PreAuthorize("hasAuthority('ROLE_CLIENT')")
+    @PostMapping("my-books")
+    public String commitReturnRequest(@AuthenticationPrincipal User currentUser, Order order) {
+        orderService.addRequest(order);
+        return "redirect:/my-requests";
     }
 
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
@@ -120,6 +142,5 @@ public class OrderController {
         orderService.approveRequest(order_id);
         return "redirect:/return-requests";
     }
-
 
 }

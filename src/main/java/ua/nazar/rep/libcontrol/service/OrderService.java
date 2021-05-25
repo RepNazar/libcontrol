@@ -28,8 +28,12 @@ public class OrderService {
         return orderRepo.findAllByForReturn(true, pageable);
     }
 
-    public Page<Order> findAllByClientId(Long user_id, Pageable pageable) {
+    public Page<Order> findAllOrdersByClientId(Long user_id, Pageable pageable) {
         return orderRepo.findAllByClientIdAndForReturn(user_id, false, pageable);
+    }
+
+    public Page<Order> findAllRequestsByClientId(Long user_id, Pageable pageable) {
+        return orderRepo.findAllByClientIdAndForReturn(user_id, true, pageable);
     }
 
     public Order addOrder(Order order) {

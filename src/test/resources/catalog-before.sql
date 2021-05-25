@@ -1,5 +1,4 @@
-delete
-from books;
+delete from books;
 
 insert into books(id, code, name, genre, in_stock, owner_id)
 values (1, '01', '011', 'aw', true, null),

@@ -22,6 +22,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/my-orders">My orders</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-requests">My requests</a>
+                </li>
             </#if>
             <#if isManager || isDirector>
                 <li class="nav-item">

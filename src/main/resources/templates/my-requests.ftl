@@ -1,12 +1,12 @@
 <#include "parts/security.ftl">
+<#include "parts/security.ftl">
 <#import "parts/orderList.ftl" as list>
 <#import "parts/common.ftl" as c>
 <#import "parts/pager.ftl" as p>
 
 <@c.page>
-
     <#if page.getTotalElements() gt 25>
-        <@p.pager "/orders" page/>
+        <@p.pager "/my-requests" page/>
     </#if>
 
     <table class="table table-sm table-striped">
@@ -21,13 +21,12 @@
         </tr>
         </thead>
 
-        <tbody id="orders-list">
-        <@list.ordersList "/orders" isManager isClient />
+        <tbody id="requests-list">
+        <@list.ordersList "/my-requests" isManager isClient />
         </tbody>
     </table>
-
     <#if page.getTotalElements() gt 25>
-        <@p.pager "/orders" page/>
+        <@p.pager "/my-requests" page/>
     </#if>
 
 </@c.page>

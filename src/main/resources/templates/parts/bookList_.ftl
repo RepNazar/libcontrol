@@ -1,6 +1,6 @@
 <#include "security.ftl">
-<#if personalized?? && page.content[0]?? && page.content[0].owner??>
-    <h4>${page.content[0].owner.username!} books:</h4>
+<#if owner??>
+    <h4>${owner.username!} books:</h4>
 </#if>
 <#list page.content as book>
     <#if book.owner??>
@@ -18,7 +18,7 @@
     </#if>
 
     <tr data-id="${book.id}"
-        <#if !personalized??>class="${(book.inStock)?string('','bg-secondary')}"</#if>>
+        <#if !owner??>class="${(book.inStock)?string('','bg-secondary')}"</#if>>
         <td data-type="code">
             <a href="${redirectLink}">${book.code}</a>
         </td>
@@ -30,7 +30,7 @@
         </td>
 
         <td>
-            <#if isLibrarian && !(personalized??)>
+            <#if isLibrarian && !(owner??)>
                 <form method="post" action="/catalog/delete">
 
                     <input type="hidden" name="id" value="${book.id}"/>

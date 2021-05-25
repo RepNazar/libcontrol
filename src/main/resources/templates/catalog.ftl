@@ -3,9 +3,9 @@
 <#import "parts/pager.ftl" as p>
 <@c.page>
 
-    <#if personalized?? && page.content[0]?? && page.content[0].owner??>
+    <#if owner??>
         <#if isEmployee>
-            <#assign currentUrl = "/catalog/${page.content[0].owner.id!}">
+            <#assign currentUrl = "/catalog/${owner.id!}">
         <#else>
             <#assign currentUrl = "/my-books">
         </#if>
@@ -64,7 +64,7 @@
         </thead>
 
         <tbody id="books-list">
-        <#if isLibrarian && !(personalized??)>
+        <#if isLibrarian && !(owner??)>
             <form method="post" action="/catalog" enctype="multipart/form-data">
                 <#include "parts/bookEdit.ftl" />
             </form>

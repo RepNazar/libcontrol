@@ -1,7 +1,7 @@
 <#import "parts/common.ftl" as c>
 
 <@c.page>
-    <h5>${username}</h5>
+    <h5 class="mb-4">${username}</h5>
     ${message!}
     <form method="post" action="/user/profile">
         <div class="form-group row">

@@ -90,7 +90,7 @@ public class BookController {
                               Model model) {
         Page<Book> page = bookService.findAllByOwnerIdAndFilters(user.getId(), filter, genreFilter, pageable);
         model.addAttribute("page", page);
-        model.addAttribute("personalized", true);
+        model.addAttribute("owner", user);
         model.addAttribute("filter", filter.isEmpty() ? null : filter);
         model.addAttribute("genreFilter", genreFilter.isEmpty() ? null : genreFilter);
         return "catalog";
@@ -105,7 +105,7 @@ public class BookController {
                                  Model model) {
         Page<Book> page = bookService.findAllByOwnerIdAndFilters(user.getId(), filter, genreFilter, pageable);
         model.addAttribute("page", page);
-        model.addAttribute("personalized", true);
+        model.addAttribute("owner", user);
         model.addAttribute("filter", filter.isEmpty() ? null : filter);
         model.addAttribute("genreFilter", genreFilter.isEmpty() ? null : genreFilter);
 
