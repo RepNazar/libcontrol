@@ -87,14 +87,15 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
-        if (isEmailChanged) {
-            if (!StringUtils.isEmpty(password)) {
+
+        if (!StringUtils.isEmpty(password)) {
+            if (isEmailChanged) {
                 sendFullMessage(user, password);
             } else {
-                sendActivationMessage(user);
+                sendDataMessage(user, user.getUsername(), password);
             }
-        } else if (!StringUtils.isEmpty(password)) {
-            sendDataMessage(user, user.getUsername(), password);
+        } else if (isEmailChanged) {
+            sendActivationMessage(user);
         }
     }
 
@@ -134,7 +135,7 @@ public class UserService implements UserDetailsService {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n\n" +
-                            "Welcome to our Library team.\n" +
+                            "Welcome to our Library.\n" +
                             "Your account data is:\n\n" +
                             "Username:\n%s\n" +
                             "Password:\n%s\n\n" +
@@ -147,7 +148,7 @@ public class UserService implements UserDetailsService {
                     user.getActivationCode()
             );
 
-            mailSender.send(user.getEmail(), "Activation code", message);
+            mailSender.send(user.getEmail(), "Activation code and credentials", message);
         }
     }
 

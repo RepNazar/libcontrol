@@ -29,7 +29,7 @@ public class LoginTest {
 
     @Test
     public void loginButtonDisplayedTest() throws Exception {
-        this.mockMvc.perform(get("/"))
+        this.mockMvc.perform(get("/catalog"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsStringIgnoringCase("lib")))

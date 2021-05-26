@@ -5,8 +5,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +13,13 @@ import ua.nazar.rep.libcontrol.domain.Role;
 import ua.nazar.rep.libcontrol.domain.User;
 import ua.nazar.rep.libcontrol.service.UserService;
 
-import javax.validation.Valid;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
+    private final static String EMAIL_PATTERN = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private final static Pattern EMAIL_REGEX = Pattern.compile(EMAIL_PATTERN);
+
     private final UserService userService;
 
     @Autowired
@@ -52,19 +52,27 @@ public class UserController {
             @RequestParam("password2") String passwordConfirm,
             Model model
     ) {
-        if (password.equals(passwordConfirm)) {
-
-            userService.updateProfile(user, password, email);
-            model.addAttribute("user", null);
-            model.addAttribute("passwordError", null);
-
-            return "redirect:/user/profile";
-        } else {
+        if (!password.equals(passwordConfirm)) {
             model.addAttribute("username", user.getUsername());
             model.addAttribute("email", email);
             model.addAttribute("passwordError", "Passwords are different");
+            if (!EMAIL_REGEX.matcher(email).matches()) {
+                model.addAttribute("emailError", "Email is not correct");
+            }
             return "profile";
         }
+        if (!EMAIL_REGEX.matcher(email).matches()) {
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("email", email);
+            model.addAttribute("emailError", "Email is not correct");
+            return "profile";
+        }
+
+        userService.updateProfile(user, password, email);
+        model.addAttribute("user", null);
+        model.addAttribute("passwordError", null);
+
+        return "redirect:/user/profile";
     }
 
     @GetMapping("/activate/{code}")
@@ -80,6 +88,46 @@ public class UserController {
         }
 
         return "loginPage";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DIRECTOR')")
+    @GetMapping("/user/{user}")
+    public String userEditForm(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", Role.values());
+
+        return "userEdit";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DIRECTOR')")
+    @PostMapping("/users")
+    public String saveUser(
+            @RequestParam("userId") User user,
+            @RequestParam("password") String password,
+            @RequestParam("password2") String passwordConfirm,
+            @RequestParam("email") String email,
+            Model model
+    ) {
+        if (!password.equals(passwordConfirm)) {
+            model.addAttribute("user", user);
+            model.addAttribute("passwordError", "Passwords are different");
+            if (!EMAIL_REGEX.matcher(email).matches()) {
+                model.addAttribute("emailError", "Email is not correct");
+            }
+            return "userEdit";
+        }
+        if (!EMAIL_REGEX.matcher(email).matches()) {
+            model.addAttribute("user", user);
+            model.addAttribute("emailError", "Email is not correct");
+            return "userEdit";
+        }
+
+        userService.updateProfile(user, password, email);
+
+        model.addAttribute("user", null);
+        model.addAttribute("passwordError", null);
+
+        return "redirect:/users";
     }
 
 }

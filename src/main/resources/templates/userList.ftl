@@ -12,12 +12,17 @@
             <th></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="users-list">
         <#list users as user>
-            <tr>
-                <td>${user.username}</td>
-                <td>${user.email!}</td>
-                <td><#list user.roles as role>${role}<#sep>, </#list></td>
+            <tr data-id="${user.id}">
+                <td data-type="username">${user.username}</td>
+                <td data-type="email">${user.email!}</td>
+                <td data-type="roles"><#list user.roles as role>${role}<#sep>, </#list></td>
+                <td>
+                    <a href="/user/${user.id}">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
             </tr>
         </#list>
         </tbody>

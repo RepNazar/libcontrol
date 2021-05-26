@@ -10,8 +10,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,8 +26,7 @@ class GreetingControllerTest {
     void greeting() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("lib")))
-                .andExpect(content().string(containsStringIgnoringCase("Greeting")));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/catalog"));
     }
 }

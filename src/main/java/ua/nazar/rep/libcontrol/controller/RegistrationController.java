@@ -44,7 +44,7 @@ public class RegistrationController {
 
     @PreAuthorize("hasAuthority('ROLE_DIRECTOR')")
     @GetMapping("/register")
-    public String addEmployee(Model model) {
+    public String getRoles(Model model) {
         model.addAttribute("roles", Role.values());
         return "register";
     }
@@ -62,7 +62,7 @@ public class RegistrationController {
             model.addAttribute("user", user);
             return "register";
         }
-        return "redirect:/register";
+        return "redirect:/users";
     }
 
     private boolean addUserFailed(Role role, String passwordConfirm, @Valid User user, BindingResult bindingResult, Model model) {

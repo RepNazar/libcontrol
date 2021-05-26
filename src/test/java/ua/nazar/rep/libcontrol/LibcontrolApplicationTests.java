@@ -9,8 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,9 +26,10 @@ class LibcontrolApplicationTests {
     void contextLoads() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/catalog"));
+        this.mockMvc.perform(get("/catalog"))
                 .andExpect(content().string(containsStringIgnoringCase("lib")));
-
     }
 
 }
