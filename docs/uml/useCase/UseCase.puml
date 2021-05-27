@@ -1,0 +1,64 @@
+@startuml
+
+actor "NonAuthorized" as na
+actor Authorized as auth
+actor "Client" as client
+actor "Librarian" as lib
+actor "Manager" as man
+actor "Director" as dir
+
+usecase "Registration" as reg
+usecase "Login" as login
+usecase "View all books and filter by name and genre" as bookList
+usecase "Edit own account data" as editAccount
+usecase "Create orders and return requests on books" as createOrdersAndRequests
+usecase "Confirm receipt of order" as confirmOrder
+usecase "View own books orders and return requests" as ownBookList
+usecase "Add books" as addBook
+usecase "Change book info" as editBook
+usecase "Delete book" as deleteBook
+usecase "View all books or any specific client books" as employeeBookList
+usecase "View lists of all books orders and requests or any specific client books orders and requests" as bookOrderRequestLists
+usecase "Confirm receipt of book as a result of return request" as approveRequest
+usecase "Approve order" as approveOrder
+usecase "View the list of employees" as employeeList
+usecase "Register employees" as employeeReg
+usecase "Change employees account data" as editEmployeeAccount
+
+usecase "Email confirmation" as emailConfirm
+
+employeeBookList .-> bookOrderRequestLists : include
+
+emailConfirm .-> reg : extend
+
+na --> reg
+na --> login
+na --> bookList
+
+auth -> editAccount
+
+na <|-- auth
+
+auth <|-- client
+auth <|-- lib
+auth <|-- man
+auth <|-- dir
+
+client --> createOrdersAndRequests
+client --> confirmOrder
+client --> ownBookList
+
+lib --> addBook
+lib --> editBook
+lib --> deleteBook
+lib --> employeeBookList
+
+man --> approveOrder
+man --> approveRequest
+man ---> bookOrderRequestLists
+
+dir ---> bookOrderRequestLists
+dir --> employeeList
+dir --> employeeReg
+dir --> editEmployeeAccount
+@enduml

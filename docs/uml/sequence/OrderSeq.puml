@@ -1,0 +1,126 @@
+@startuml
+
+participant Client
+participant Manager
+
+autonumber
+
+Client -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+
+Client -> OrderController : createOrder
+activate OrderController
+    OrderController -> BookService : findByIdAndInStockTrue
+    activate BookService
+        BookService -> BookRepo : findByIdAndInStockTrue
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> OrderController
+    deactivate BookService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : commitOrder
+activate OrderController
+    OrderController -> OrderService : addOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+
+Manager -> OrderController : getAllOrders
+activate OrderController
+    OrderController -> OrderService : findAllOrders
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+Manager -> OrderController : approveOrder
+activate OrderController
+    OrderController -> OrderService : approveOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService -> OrderRepo : deleteAllByBookIdAndApprovedFalse
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+
+Client -> OrderController : getClientOrders
+activate OrderController
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : confirmOrder
+activate OrderController
+    OrderController -> OrderService : confirmOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> BookController : getOwnBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+
+@enduml

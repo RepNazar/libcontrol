@@ -1,0 +1,743 @@
+@startuml
+
+participant Non_Authorized
+participant Client
+participant Librarian
+participant Manager
+participant Director
+
+Non_Authorized -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Non_Authorized
+deactivate BookController
+
+Client -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+Librarian -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Librarian
+deactivate BookController
+Manager -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Manager
+deactivate BookController
+Director -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Director
+deactivate BookController
+
+Client -> BookController : getOwnBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+
+Librarian -> BookController : getClientBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Librarian
+deactivate BookController
+Manager -> BookController : getClientBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Manager
+deactivate BookController
+Director -> BookController : getClientBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Director
+deactivate BookController
+
+Librarian -> BookController : commitBook
+activate BookController
+    BookController -> ControllerUtils : getErrors
+    activate ControllerUtils
+        ControllerUtils -> ControllerUtils : λ→
+        activate ControllerUtils
+            ControllerUtils --> ControllerUtils
+        deactivate ControllerUtils
+            ControllerUtils --> BookController
+    deactivate ControllerUtils
+    BookController -> BookService : findAll
+    activate BookService
+        BookService -> BookRepo : findAll
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController -> BookService : save
+    activate BookService
+        BookService -> BookRepo : save
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Librarian
+deactivate BookController
+
+Librarian -> BookController : deleteBook
+activate BookController
+    BookController -> BookService : deleteById
+    activate BookService
+        BookService -> BookRepo : deleteById
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Librarian
+deactivate BookController
+
+Non_Authorized -> RegistrationController : registration
+activate RegistrationController
+    RegistrationController --> Non_Authorized
+deactivate RegistrationController
+
+Non_Authorized -> RegistrationController : addClient
+activate RegistrationController
+    RegistrationController -> RegistrationController : addUserFailed
+    activate RegistrationController
+        RegistrationController -> ControllerUtils : getErrors
+        activate ControllerUtils
+            ControllerUtils -> ControllerUtils : λ→
+            activate ControllerUtils
+                ControllerUtils --> ControllerUtils
+            deactivate ControllerUtils
+            ControllerUtils --> RegistrationController
+        deactivate ControllerUtils
+        RegistrationController -> UserService : addUser
+        activate UserService
+            UserService -> UserRepo : findByUsername
+            activate UserRepo
+                UserRepo --> UserService
+            deactivate UserRepo
+            UserService -> UserService : sendFullMessage
+            activate UserService
+                UserService -> MailSender : send
+                activate MailSender
+                    MailSender --> UserService
+                deactivate MailSender
+                UserService -> UserRepo : save
+                activate UserRepo
+                    UserRepo --> UserService
+                deactivate UserRepo
+                UserService --> UserService
+            deactivate UserService
+        UserService --> RegistrationController
+        deactivate UserService
+        RegistrationController --> RegistrationController
+    deactivate RegistrationController
+    RegistrationController --> Non_Authorized
+deactivate RegistrationController
+
+Director -> RegistrationController : getRoles
+activate RegistrationController
+    RegistrationController -> Role : values
+    activate Role
+        Role --> RegistrationController
+    deactivate Role
+    RegistrationController --> Director
+deactivate RegistrationController
+
+Director -> RegistrationController : addEmployee
+activate RegistrationController
+    RegistrationController -> RegistrationController : addUserFailed
+    activate RegistrationController
+        RegistrationController -> ControllerUtils : getErrors
+        activate ControllerUtils
+            ControllerUtils -> ControllerUtils : λ→
+            activate ControllerUtils
+                ControllerUtils --> ControllerUtils
+            deactivate ControllerUtils
+            ControllerUtils --> RegistrationController
+        deactivate ControllerUtils
+        RegistrationController -> UserService : addUser
+        activate UserService
+            UserService -> UserRepo : findByUsername
+            activate UserRepo
+                UserRepo --> UserService
+            deactivate UserRepo
+            UserService -> UserService : sendFullMessage
+            activate UserService
+                UserService -> MailSender : send
+                activate MailSender
+                    MailSender --> UserService
+                deactivate MailSender
+                UserService -> UserRepo : save
+                activate UserRepo
+                    UserRepo --> UserService
+                deactivate UserRepo
+                UserService --> UserService
+            deactivate UserService
+        UserService --> RegistrationController
+        deactivate UserService
+        RegistrationController --> RegistrationController
+    deactivate RegistrationController
+    RegistrationController -> Role : values
+    activate Role
+    Role --> RegistrationController
+    deactivate Role
+    RegistrationController --> Director
+deactivate RegistrationController
+
+Client -> OrderController : createOrder
+activate OrderController
+    OrderController -> BookService : findByIdAndInStockTrue
+    activate BookService
+        BookService -> BookRepo : findByIdAndInStockTrue
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> OrderController
+    deactivate BookService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : commitOrder
+activate OrderController
+    OrderController -> OrderService : addOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : getClientOrders
+activate OrderController
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : confirmOrder
+activate OrderController
+    OrderController -> OrderService : confirmOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : commitReturnRequest
+activate OrderController
+    OrderController -> OrderService : addRequest
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+Client -> OrderController : getClientReturnRequests
+activate OrderController
+    OrderController -> OrderService : findAllRequestsByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+
+Manager -> OrderController : getAllOrders
+activate OrderController
+    OrderController -> OrderService : findAllOrders
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+Director -> OrderController : getAllOrders
+activate OrderController
+    OrderController -> OrderService : findAllOrders
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Director
+deactivate OrderController
+
+Manager -> OrderController : getOrdersByUser
+activate OrderController
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+Director -> OrderController : getOrdersByUser
+activate OrderController
+    OrderController -> OrderService : findAllOrdersByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Director
+deactivate OrderController
+
+Manager -> OrderController : getAllReturnRequests
+activate OrderController
+    OrderController -> OrderService : findAllRequests
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+Director -> OrderController : getAllReturnRequests
+activate OrderController
+    OrderController -> OrderService : findAllRequests
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Director
+deactivate OrderController
+
+Manager -> OrderController : getReturnRequestsByUser
+activate OrderController
+    OrderController -> OrderService : findAllRequestsByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+Director -> OrderController : getReturnRequestsByUser
+activate OrderController
+    OrderController -> OrderService : findAllRequestsByClientId
+    activate OrderService
+        OrderService -> OrderRepo : findAllByClientIdAndForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Director
+deactivate OrderController
+
+Manager -> OrderController : approveOrder
+activate OrderController
+    OrderController -> OrderService : approveOrder
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService -> OrderRepo : deleteAllByBookIdAndApprovedFalse
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+Manager -> OrderController : approveReturnRequest
+activate OrderController
+    OrderController -> OrderService : approveRequest
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+Non_Authorized -> UserController : activate
+activate UserController
+    UserController -> UserService : activateUser
+    activate UserService
+        UserService -> UserRepo : findByActivationCode
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService -> UserRepo : save
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Non_Authorized
+deactivate UserController
+
+Client -> UserController : getProfile
+activate UserController
+    UserController -> UserService : findUser
+    activate UserService
+        UserService -> UserRepo : findById
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Client
+deactivate UserController
+Librarian -> UserController : getProfile
+activate UserController
+    UserController -> UserService : findUser
+    activate UserService
+        UserService -> UserRepo : findById
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Librarian
+deactivate UserController
+Manager -> UserController : getProfile
+activate UserController
+    UserController -> UserService : findUser
+    activate UserService
+        UserService -> UserRepo : findById
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Manager
+deactivate UserController
+Director -> UserController : getProfile
+activate UserController
+    UserController -> UserService : findUser
+    activate UserService
+        UserService -> UserRepo : findById
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Director
+deactivate UserController
+
+Client -> UserController : updateProfile
+activate UserController
+    UserController -> UserService : updateProfile
+    activate UserService
+        UserService -> UserRepo : save
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService -> UserService : sendFullMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendDataMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendActivationMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Client
+deactivate UserController
+Librarian -> UserController : updateProfile
+activate UserController
+    UserController -> UserService : updateProfile
+    activate UserService
+        UserService -> UserRepo : save
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService -> UserService : sendFullMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendDataMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendActivationMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Librarian
+deactivate UserController
+Manager -> UserController : updateProfile
+activate UserController
+    UserController -> UserService : updateProfile
+    activate UserService
+        UserService -> UserRepo : save
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService -> UserService : sendFullMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendDataMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendActivationMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Manager
+deactivate UserController
+Director -> UserController : updateProfile
+activate UserController
+    UserController -> UserService : updateProfile
+    activate UserService
+        UserService -> UserRepo : save
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService -> UserService : sendFullMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendDataMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendActivationMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Director
+deactivate UserController
+
+Director -> UserController : userList
+activate UserController
+    UserController -> UserService : findAllNotClient
+    activate UserService
+        UserService -> UserRepo : findByRolesNotContains
+        activate UserRepo
+            UserRepo --> UserService
+        deactivate UserRepo
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Director
+deactivate UserController
+
+Director -> UserController : userEditForm
+activate UserController
+    UserController -> Role : values
+    activate Role
+        Role --> UserController
+    deactivate Role
+    UserController --> Director
+deactivate UserController
+
+Director -> UserController : saveUser
+activate UserController
+    UserController -> UserService : updateProfile
+    activate UserService
+        UserService -> UserRepo : save
+    activate UserRepo
+        UserRepo --> UserService
+    deactivate UserRepo
+
+    UserService -> UserService : sendFullMessage
+    activate UserService
+        UserService -> MailSender : send
+        activate MailSender
+            MailSender --> UserService
+        deactivate MailSender
+        UserService --> UserService
+    deactivate UserService
+        UserService -> UserService : sendDataMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService -> UserService : sendActivationMessage
+        activate UserService
+            UserService -> MailSender : send
+            activate MailSender
+                MailSender --> UserService
+            deactivate MailSender
+            UserService --> UserService
+        deactivate UserService
+        UserService --> UserController
+    deactivate UserService
+    UserController --> Director
+deactivate UserController
+
+@enduml

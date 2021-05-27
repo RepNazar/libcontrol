@@ -1,0 +1,76 @@
+@startuml
+
+participant Client
+participant Manager
+
+autonumber
+
+Client -> BookController : getOwnBooks
+activate BookController
+    BookController -> BookService : findAllByOwnerIdAndFilters
+    activate BookService
+        BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+
+Client -> OrderController : commitReturnRequest
+activate OrderController
+    OrderController -> OrderService : addRequest
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Client
+deactivate OrderController
+
+
+Manager -> OrderController : getAllReturnRequests
+activate OrderController
+    OrderController -> OrderService : findAllRequests
+    activate OrderService
+        OrderService -> OrderRepo : findAllByForReturn
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+
+Manager -> OrderController : approveReturnRequest
+activate OrderController
+    OrderController -> OrderService : approveRequest
+    activate OrderService
+        OrderService -> OrderRepo : save
+        activate OrderRepo
+            OrderRepo --> OrderService
+        deactivate OrderRepo
+        OrderService --> OrderController
+    deactivate OrderService
+    OrderController --> Manager
+deactivate OrderController
+
+
+Client -> BookController : getBook
+activate BookController
+    BookController -> BookService : findAllByFilters
+    activate BookService
+        BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
+        activate BookRepo
+            BookRepo --> BookService
+        deactivate BookRepo
+        BookService --> BookController
+    deactivate BookService
+    BookController --> Client
+deactivate BookController
+
+@enduml

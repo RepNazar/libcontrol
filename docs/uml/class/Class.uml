@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/skillfool/IdeaProjects/libcontrol/src/main/java/ua/nazar/rep/libcontrol</OriginalElement>
+  <nodes>
+    <node x="1159.393265068266" y="433.0">ua.nazar.rep.libcontrol.domain.Book</node>
+    <node x="1524.268265068266" y="385.0">ua.nazar.rep.libcontrol.domain.Order</node>
+    <node x="439.89526506826587" y="741.0">ua.nazar.rep.libcontrol.config.MvcConfig</node>
+    <node x="1160.2617882117881" y="1702.0">ua.nazar.rep.libcontrol.controller.ControllerUtils</node>
+    <node x="126.52222777222846" y="863.5">ua.nazar.rep.libcontrol.LibcontrolApplication</node>
+    <node x="1009.6932650682659" y="838.0">ua.nazar.rep.libcontrol.domain.User</node>
+    <node x="1645.4912650682656" y="1095.0">ua.nazar.rep.libcontrol.service.BookService</node>
+    <node x="-1.2105186480184784" y="2010.0">ua.nazar.rep.libcontrol.controller.UserController</node>
+    <node x="2467.3662650682654" y="840.0">ua.nazar.rep.libcontrol.repo.OrderRepo</node>
+    <node x="2509.8662650682654" y="1059.0">ua.nazar.rep.libcontrol.service.OrderService</node>
+    <node x="393.7894813519815" y="2046.0">ua.nazar.rep.libcontrol.config.WebSecurityConfig</node>
+    <node x="310.77222777222846" y="1230.0">ua.nazar.rep.libcontrol.repo.UserRepo</node>
+    <node x="384.7894813519813" y="1413.0">ua.nazar.rep.libcontrol.service.UserService</node>
+    <node x="2007.3442973692986" y="1524.75">ua.nazar.rep.libcontrol.controller.OrderController</node>
+    <node x="114.02222777222846" y="1070.0">ua.nazar.rep.libcontrol.config.EncryptionConfig</node>
+    <node x="1862.8563977688996" y="2122.5">ua.nazar.rep.libcontrol.controller.GreetingController</node>
+    <node x="1570.5300301365314" y="840.0">ua.nazar.rep.libcontrol.repo.BookRepo</node>
+    <node x="649.0222277722285" y="1217.0">ua.nazar.rep.libcontrol.service.MailSender</node>
+    <node x="439.89526506826587" y="925.0">ua.nazar.rep.libcontrol.config.MailConfig</node>
+    <node x="1334.0104395604405" y="2022.0">ua.nazar.rep.libcontrol.controller.BookController</node>
+    <node x="779.1644813519815" y="2022.0">ua.nazar.rep.libcontrol.controller.RegistrationController</node>
+    <node x="725.7327464202472" y="908.0">ua.nazar.rep.libcontrol.domain.Role</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ua.nazar.rep.libcontrol.controller.RegistrationController" target="ua.nazar.rep.libcontrol.service.UserService" relationship="DEPENDENCY">
+      <point x="14.999518648018466" y="-103.0" />
+      <point x="1009.164" y="1984.0" />
+      <point x="604.0" y="1984.0" />
+      <point x="31.710518648018706" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.RegistrationController" target="ua.nazar.rep.libcontrol.controller.ControllerUtils" relationship="DEPENDENCY">
+      <point x="44.999518648018466" y="-103.0" />
+      <point x="1039.164" y="1984.0" />
+      <point x="1319.262" y="1984.0" />
+      <point x="2.117882118000125E-4" y="42.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.Book" target="ua.nazar.rep.libcontrol.domain.User" relationship="TO_ONE">
+      <point x="-2.6506826588956756E-4" y="163.0" />
+      <point x="1258.893" y="799.0" />
+      <point x="1187.693" y="799.0" />
+      <point x="-2.6506826588956756E-4" y="-295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.BookController" target="ua.nazar.rep.libcontrol.service.BookService" relationship="DEPENDENCY">
+      <point x="80.48956043955945" y="-103.0" />
+      <point x="1616.5" y="1997.0" />
+      <point x="1897.991" y="1997.0" />
+      <point x="14.999734931734338" y="115.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.repo.BookRepo" target="ua.nazar.rep.libcontrol.domain.Book" relationship="DEPENDENCY">
+      <point x="-3.013653144989803E-5" y="54.0" />
+      <point x="1959.03" y="1041.5" />
+      <point x="1594.0" y="1041.5" />
+      <point x="1594.0" y="1485.0" />
+      <point x="1428.193" y="1485.0" />
+      <point x="1428.193" y="596.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-4.8135198130694334E-4" y="187.0" />
+      <point x="572.289" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.Book" target="ua.nazar.rep.libcontrol.domain.Order" relationship="TO_MANY">
+      <point x="99.49973493173411" y="-15.0" />
+      <point x="1397.0" y="581.0" />
+      <point x="1397.0" y="572.0" />
+      <point x="-99.50026506826589" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.BookController" target="ua.nazar.rep.libcontrol.domain.Book" relationship="DEPENDENCY">
+      <point x="14.999560439559446" y="-103.0" />
+      <point x="1551.01" y="2001.0" />
+      <point x="1594.0" y="2001.0" />
+      <point x="1594.0" y="1485.0" />
+      <point x="1428.193" y="1485.0" />
+      <point x="1428.193" y="596.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.User" target="ua.nazar.rep.libcontrol.domain.Role" relationship="TO_MANY">
+      <point x="-178.0" y="-109.5" />
+      <point x="82.0" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.OrderService" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-2.650682654348202E-4" y="151.0" />
+      <point x="2701.866" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.repo.UserRepo" target="ua.nazar.rep.libcontrol.domain.Role" relationship="DEPENDENCY">
+      <point x="-2.277722284702577E-4" y="-54.0" />
+      <point x="458.272" y="1186.0" />
+      <point x="807.733" y="1186.0" />
+      <point x="2.5357975277984224E-4" y="115.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.domain.Role" relationship="DEPENDENCY">
+      <point x="109.7105186480187" y="187.0" />
+      <point x="682.0" y="1877.0" />
+      <point x="156.289" y="1877.0" />
+      <point x="156.289" y="1186.0" />
+      <point x="807.733" y="1186.0" />
+      <point x="2.5357975277984224E-4" y="115.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.RegistrationController" target="ua.nazar.rep.libcontrol.service.UserService" relationship="TO_ONE">
+      <point x="29.999518648018466" y="-103.0" />
+      <point x="1024.164" y="1922.0" />
+      <point x="587.289" y="1922.0" />
+      <point x="14.999518648018693" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.BookController" target="ua.nazar.rep.libcontrol.service.BookService" relationship="TO_ONE">
+      <point x="111.98956043955945" y="-103.0" />
+      <point x="1648.0" y="1599.0" />
+      <point x="1882.991" y="1599.0" />
+      <point x="-2.650682656621939E-4" y="115.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.Order" target="ua.nazar.rep.libcontrol.domain.Book" relationship="TO_ONE">
+      <point x="-99.50026506826589" y="-15.0" />
+      <point x="1382.0" y="557.0" />
+      <point x="1382.0" y="611.0" />
+      <point x="99.49973493173411" y="15.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.domain.Book" relationship="DEPENDENCY">
+      <point x="-195.50029736929855" y="0.0" />
+      <point x="1594.0" y="1723.75" />
+      <point x="1594.0" y="1485.0" />
+      <point x="1428.193" y="1485.0" />
+      <point x="1428.193" y="596.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.RegistrationController" target="ua.nazar.rep.libcontrol.domain.Role" relationship="DEPENDENCY">
+      <point x="-15.000481351981534" y="-103.0" />
+      <point x="979.164" y="1877.0" />
+      <point x="156.289" y="1877.0" />
+      <point x="156.289" y="1186.0" />
+      <point x="807.733" y="1186.0" />
+      <point x="2.5357975277984224E-4" y="115.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.domain.Order" relationship="DEPENDENCY">
+      <point x="195.49970263070145" y="0.0" />
+      <point x="2433.0" y="1723.75" />
+      <point x="2433.0" y="572.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.service.MailSender" relationship="TO_ONE">
+      <point x="165.0" y="-187.0" />
+      <point x="-29.232746420247167" y="67.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.repo.UserRepo" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-90.98322777222847" y="54.0" />
+      <point x="367.289" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.UserController" target="ua.nazar.rep.libcontrol.service.UserService" relationship="TO_ONE">
+      <point x="-30.000481351981534" y="-115.0" />
+      <point x="156.289" y="1922.0" />
+      <point x="587.289" y="1922.0" />
+      <point x="14.999518648018693" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.OrderService" target="ua.nazar.rep.libcontrol.domain.Order" relationship="DEPENDENCY">
+      <point x="-192.00026506826543" y="0.0" />
+      <point x="2433.0" y="1210.0" />
+      <point x="2433.0" y="572.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.service.BookService" relationship="DEPENDENCY">
+      <point x="-183.8442973692986" y="199.0" />
+      <point x="2019.0" y="1997.0" />
+      <point x="1897.991" y="1997.0" />
+      <point x="14.999734931734338" y="115.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.OrderService" target="ua.nazar.rep.libcontrol.repo.OrderRepo" relationship="TO_ONE">
+      <point x="15.0" y="-151.0" />
+      <point x="15.0" y="54.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.User" target="ua.nazar.rep.libcontrol.domain.Book" relationship="TO_MANY">
+      <point x="177.9997349317341" y="-262.5" />
+      <point x="1382.0" y="870.5" />
+      <point x="1382.0" y="611.0" />
+      <point x="99.49973493173411" y="15.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.UserController" target="ua.nazar.rep.libcontrol.service.UserService" relationship="DEPENDENCY">
+      <point x="14.999518648018466" y="-115.0" />
+      <point x="201.289" y="1984.0" />
+      <point x="604.0" y="1984.0" />
+      <point x="31.710518648018706" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.service.BookService" relationship="TO_ONE">
+      <point x="-195.50029736929855" y="-15.0" />
+      <point x="1648.0" y="1708.75" />
+      <point x="1648.0" y="1599.0" />
+      <point x="1882.991" y="1599.0" />
+      <point x="-2.650682656621939E-4" y="115.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.OrderService" target="ua.nazar.rep.libcontrol.repo.OrderRepo" relationship="DEPENDENCY">
+      <point x="0.0" y="-151.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.UserController" target="ua.nazar.rep.libcontrol.domain.Role" relationship="DEPENDENCY">
+      <point x="-15.000481351981534" y="-115.0" />
+      <point x="171.289" y="1877.0" />
+      <point x="156.289" y="1877.0" />
+      <point x="156.289" y="1186.0" />
+      <point x="807.733" y="1186.0" />
+      <point x="2.5357975277984224E-4" y="115.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.RegistrationController" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-4.81351981534317E-4" y="-103.0" />
+      <point x="994.164" y="2001.0" />
+      <point x="1446.0" y="2001.0" />
+      <point x="1446.0" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.Order" target="ua.nazar.rep.libcontrol.domain.User" relationship="TO_ONE">
+      <point x="-2.6506826588956756E-4" y="187.0" />
+      <point x="1623.768" y="799.0" />
+      <point x="1187.693" y="799.0" />
+      <point x="-2.6506826588956756E-4" y="-295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.BookController" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-4.395604405544873E-4" y="-103.0" />
+      <point x="1536.01" y="2001.0" />
+      <point x="1446.0" y="2001.0" />
+      <point x="1446.0" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.User" target="ua.nazar.rep.libcontrol.domain.Order" relationship="TO_MANY">
+      <point x="177.9997349317341" y="0.0" />
+      <point x="1397.0" y="1133.0" />
+      <point x="1397.0" y="572.0" />
+      <point x="-99.50026506826589" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.repo.OrderRepo" target="ua.nazar.rep.libcontrol.domain.Order" relationship="DEPENDENCY">
+      <point x="-234.50026506826543" y="0.0" />
+      <point x="2433.0" y="894.0" />
+      <point x="2433.0" y="572.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.service.MailSender" relationship="DEPENDENCY">
+      <point x="180.0" y="-187.0" />
+      <point x="-14.232746420247167" y="67.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.domain.User" target="ua.nazar.rep.libcontrol.domain.Role" relationship="DEPENDENCY">
+      <point x="-178.0002650682659" y="-1.5" />
+      <point x="907.233" y="1131.5" />
+      <point x="907.233" y="1186.0" />
+      <point x="807.733" y="1186.0" />
+      <point x="2.5357975277984224E-4" y="115.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.UserController" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-4.81351981534317E-4" y="-115.0" />
+      <point x="186.289" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.repo.UserRepo" relationship="TO_ONE">
+      <point x="0.0" y="-187.0" />
+      <point x="114.01725357975283" y="54.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.domain.User" relationship="DEPENDENCY">
+      <point x="-2.9736929855062044E-4" y="199.0" />
+      <point x="2202.844" y="1967.0" />
+      <point x="1142.762" y="1967.0" />
+      <point x="-44.93126506826593" y="295.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.BookService" target="ua.nazar.rep.libcontrol.repo.BookRepo" relationship="TO_ONE">
+      <point x="91.03873493173433" y="-115.0" />
+      <point x="14.99996986346855" y="54.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.UserService" target="ua.nazar.rep.libcontrol.repo.UserRepo" relationship="DEPENDENCY">
+      <point x="-114.01725357975283" y="-187.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.service.OrderService" relationship="DEPENDENCY">
+      <point x="0.0" y="-199.0" />
+      <point x="2202.8442973692986" y="1195.0" />
+      <point x="-192.0" y="-15.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.BookService" target="ua.nazar.rep.libcontrol.domain.Book" relationship="DEPENDENCY">
+      <point x="-237.50026506826566" y="0.0" />
+      <point x="1594.0" y="1210.0" />
+      <point x="1594.0" y="1485.0" />
+      <point x="1428.193" y="1485.0" />
+      <point x="1428.193" y="596.0" />
+      <point x="99.49973493173411" y="0.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.BookController" target="ua.nazar.rep.libcontrol.controller.ControllerUtils" relationship="DEPENDENCY">
+      <point x="-139.01043956044055" y="-103.0" />
+      <point x="1397.0" y="1984.0" />
+      <point x="1319.262" y="1984.0" />
+      <point x="2.117882118000125E-4" y="42.5" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.config.WebSecurityConfig" target="ua.nazar.rep.libcontrol.service.UserService" relationship="DEPENDENCY">
+      <point x="-4.81351981534317E-4" y="-79.0" />
+      <point x="572.289" y="1984.0" />
+      <point x="604.0" y="1984.0" />
+      <point x="31.710518648018706" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.controller.OrderController" target="ua.nazar.rep.libcontrol.service.OrderService" relationship="TO_ONE">
+      <point x="195.5" y="15.0" />
+      <point x="2686.866" y="1738.75" />
+      <point x="-15.000265068265435" y="151.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.config.WebSecurityConfig" target="ua.nazar.rep.libcontrol.service.UserService" relationship="TO_ONE">
+      <point x="14.999518648018466" y="-79.0" />
+      <point x="14.999518648018693" y="187.0" />
+    </edge>
+    <edge source="ua.nazar.rep.libcontrol.service.BookService" target="ua.nazar.rep.libcontrol.repo.BookRepo" relationship="DEPENDENCY">
+      <point x="106.03873493173433" y="-115.0" />
+      <point x="29.99996986346855" y="54.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.25" showDependencies="true" x="1291.0" y="1380.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
