@@ -30,7 +30,7 @@
             <input type="text" name="genre"
                    value="<#if book??>${book.genre}</#if>"
                    class="form-control"
-                   placeholder="Name"/>
+                   placeholder="Genre"/>
         </div>
     </td>
     <td>

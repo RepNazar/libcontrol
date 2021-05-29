@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col">
                 <div class="form-row">
-                    <div class="col-md-5">
+                    <div class="form-group col-md-5">
                         <label for="nameContainsFilterInput">Name Contains:</label>
                         <input id="nameContainsFilterInput" type="text" name="filter"
                                class="form-control" value="${filter!}" placeholder="Name contains"
@@ -69,7 +69,7 @@
                 <#include "parts/bookEdit.ftl" />
             </form>
         </#if>
-        <#include "parts/bookList_.ftl" />
+        <#include "parts/bookList.ftl" />
         </tbody>
     </table>
 
