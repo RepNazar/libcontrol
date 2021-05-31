@@ -24,7 +24,7 @@
                                class="form-control" value="${filter!}" placeholder="Name contains"
                         />
                     </div>
-                    <div class="col mt-auto">
+                    <div class="form-group col mt-auto">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-search"></i>
                         </button>
