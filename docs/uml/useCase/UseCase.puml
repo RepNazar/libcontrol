@@ -1,35 +1,37 @@
 @startuml
-
+left to right direction
 actor "NonAuthorized" as na
 actor Authorized as auth
 actor "Client" as client
-actor "Librarian" as lib
-actor "Manager" as man
-actor "Director" as dir
+package Stuff {
+    actor "Librarian" as lib
+    actor "Manager" as man
+    actor "Director" as dir
+}
 
 usecase "Registration" as reg
 usecase "Login" as login
-usecase "View all books and filter by name and genre" as bookList
+usecase "View list of all books and \n filter by name and genre" as bookList
 usecase "Edit own account data" as editAccount
-usecase "Create orders and return requests on books" as createOrdersAndRequests
+usecase "Create orders and \n return requests on books" as createOrdersAndRequests
 usecase "Confirm receipt of order" as confirmOrder
-usecase "View own books orders and return requests" as ownBookList
-usecase "Add books" as addBook
+usecase "View own books, orders, \n and return requests" as ownBookList
+usecase "Add book" as addBook
 usecase "Change book info" as editBook
 usecase "Delete book" as deleteBook
-usecase "View all books or any specific client books" as employeeBookList
-usecase "View lists of all books orders and requests or any specific client books orders and requests" as bookOrderRequestLists
-usecase "Confirm receipt of book as a result of return request" as approveRequest
+usecase "View lists of all books or \n any specific client books" as employeeBookList
+usecase "View lists of any client's \n books, orders, and requests \n or aggregate lists" as bookOrderRequestLists
+usecase "Confirm receipt of book \n as a return request result" as approveRequest
 usecase "Approve order" as approveOrder
 usecase "View the list of employees" as employeeList
 usecase "Register employees" as employeeReg
 usecase "Change employees account data" as editEmployeeAccount
-
 usecase "Email confirmation" as emailConfirm
 
+bookList .-> employeeBookList : include
 employeeBookList .-> bookOrderRequestLists : include
 
-emailConfirm .-> reg : extend
+emailConfirm .-r-> reg : extend
 
 na --> reg
 na --> login

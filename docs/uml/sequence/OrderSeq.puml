@@ -1,7 +1,19 @@
 @startuml
 
-participant Client
-participant Manager
+actor Client
+
+participant BookController
+participant BookService
+participant BookRepo
+
+database DB
+
+participant OrderRepo
+participant OrderService
+participant OrderController
+
+actor Manager
+
 
 autonumber
 
@@ -11,6 +23,10 @@ activate BookController
     activate BookService
         BookService -> BookRepo : findAllByNameContainsIgnoreCaseAndGenreContainsIgnoreCase
         activate BookRepo
+            BookRepo -> DB : select
+            activate DB
+                DB --> BookRepo
+            deactivate DB
             BookRepo --> BookService
         deactivate BookRepo
         BookService --> BookController
@@ -24,6 +40,10 @@ activate OrderController
     activate BookService
         BookService -> BookRepo : findByIdAndInStockTrue
         activate BookRepo
+            BookRepo -> DB : select
+            activate DB
+                DB --> BookRepo
+            deactivate DB
             BookRepo --> BookService
         deactivate BookRepo
         BookService --> OrderController
@@ -37,6 +57,10 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : save
         activate OrderRepo
+            OrderRepo -> DB : insert
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -45,6 +69,10 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : findAllByClientIdAndForReturn
         activate OrderRepo
+            OrderRepo -> DB : select
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -59,6 +87,10 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : findAllByForReturn
         activate OrderRepo
+            OrderRepo -> DB : select
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -72,10 +104,18 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : save
         activate OrderRepo
+            OrderRepo -> DB : insert
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService -> OrderRepo : deleteAllByBookIdAndApprovedFalse
         activate OrderRepo
+            OrderRepo -> DB : delete
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -90,6 +130,10 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : findAllByClientIdAndForReturn
         activate OrderRepo
+            OrderRepo -> DB : select
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -103,6 +147,10 @@ activate OrderController
     activate OrderService
         OrderService -> OrderRepo : save
         activate OrderRepo
+            OrderRepo -> DB : insert
+            activate DB
+                DB --> OrderRepo
+            deactivate DB
             OrderRepo --> OrderService
         deactivate OrderRepo
         OrderService --> OrderController
@@ -116,6 +164,10 @@ activate BookController
     activate BookService
         BookService -> BookRepo : findAllByOwnerIdAndNameContainsIgnoreCaseAndGenreContainsIgnoreCase
         activate BookRepo
+            BookRepo -> DB : select
+            activate DB
+                DB --> BookRepo
+            deactivate DB
             BookRepo --> BookService
         deactivate BookRepo
         BookService --> BookController
